@@ -25,6 +25,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      hint: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Hint should not empty",
+          },
+          notNull: {
+            msg: "Hint should not null",
+          },
+        },
+      },
       GameId: {
         type: DataTypes.INTEGER,
         allowNull: false,

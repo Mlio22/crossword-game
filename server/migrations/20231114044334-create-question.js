@@ -1,49 +1,53 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Questions', {
+    await queryInterface.createTable("Questions", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       word: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      hint: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       GameId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Games',
-          key: "id"
-        }
+          model: "Games",
+          key: "id",
+        },
       },
       startCoordinateX: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       startCoordinateY: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       direction: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Questions');
-  }
+    await queryInterface.dropTable("Questions");
+  },
 };

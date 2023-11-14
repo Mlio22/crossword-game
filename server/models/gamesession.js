@@ -38,6 +38,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      link: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "link should not empty",
+          },
+          notNull: {
+            msg: "link should not null",
+          },
+        },
+      },
     },
     {
       sequelize,

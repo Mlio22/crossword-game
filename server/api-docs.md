@@ -20,7 +20,7 @@ _Admins_
 _Players_
 
 ```
-- googleProfileID: string, required
+- googleProfileID: string, unique, required
 ```
 
 _Games_
@@ -33,6 +33,7 @@ _Questions_
 
 ```
 - word: string, required
+- hint: string, required
 - GameId: number, required
 - startCoordinateX: number, required
 - startCoordinateY: number, required
@@ -43,7 +44,8 @@ _GameSessions_
 
 ```
 - GameId: number, required
-- status: string, required
+- status: string, required, default: "waiting"
+- link: string, required
 ```
 
 _GamePlayers_
@@ -53,7 +55,7 @@ _GamePlayers_
 - GameSessionId: number, required
 - username: string, required
 - team: string, required
-- score: number, default: 0
+- score: number, required, default: 0
 ```
 
 _SessionQuestions_
@@ -112,7 +114,7 @@ Description:
 
 ```json
 {
-  "googleProfileID": "number (required)"
+  "googleProfileID": "string (required)"
 }
 ```
 

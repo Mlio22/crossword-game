@@ -19,6 +19,11 @@ module.exports = {
       },
       status: {
         allowNull: false,
+        defaultValue: "waiting",
+        type: Sequelize.STRING,
+      },
+      link: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {
