@@ -84,7 +84,6 @@ List of available endpoints:
 ### Admin
 
 - `POST /admin/login`
-- `GET /admin/logout`
 - `GET /admin/games`
 - `POST /admin/games`
 - `PUT /admin/games/:id`

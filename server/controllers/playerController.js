@@ -33,11 +33,4 @@ module.exports = class PlayerController {
       next(error);
     }
   }
-
-  static async logout(req, res, next) {
-    try {
-    } catch (error) {
-      next(error);
-    }
-  }
 };

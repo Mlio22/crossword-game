@@ -4,7 +4,6 @@ const AdminController = require("../controllers/adminController");
 const router = express.Router();
 
 router.post("/login", AdminController.login);
-router.get("/logout", AdminController.logout);
 router.get("/games", AdminController.getGames);
 router.post("/games", AdminController.createGame);
 router.put("/games/:id", AdminController.updateGame);
