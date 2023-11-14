@@ -39,13 +39,6 @@ module.exports = class AdminController {
     }
   }
 
-  static async logout(req, res, next) {
-    try {
-    } catch (error) {
-      return next(error);
-    }
-  }
-
   static async getGames(req, res, next) {
     try {
     } catch (error) {
