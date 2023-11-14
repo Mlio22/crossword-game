@@ -2,7 +2,7 @@ const { verifyToken } = require("../helpers/jwt");
 
 function mustAuthenticated(req, res, next) {
   try {
-    const authorization = req.header.authorization;
+    const authorization = req.headers.authorization;
 
     if (!authorization) {
       throw { name: "unauthorized", message: "please login first" };
@@ -29,7 +29,7 @@ function mustAuthenticated(req, res, next) {
 
 function mustAdmin(req, res, next) {
   try {
-    const authorization = req.header.authorization;
+    const authorization = req.headers.authorization;
 
     if (!authorization) {
       throw { name: "unauthorized", message: "please login first" };
