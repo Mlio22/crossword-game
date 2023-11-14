@@ -157,6 +157,14 @@ _Response (400 - Bad Request)_
 }
 ```
 
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please log in"
+}
+```
+
 _Response (400 - Bad Request)_
 
 ```json
@@ -189,6 +197,14 @@ _Response (200 - OK)_
 {
   "data": ["sessionQuestionID1", "sessionQuestionID2", ...],
   "status": "playing | waiting | ended"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please log in"
 }
 ```
 
@@ -441,7 +457,7 @@ _Response (401 - Unauthorized)_
 
 Description:
 
-- Logs user in and returning access_token
+- Logs user in and returning admin_token
 
 Request:
 
@@ -458,7 +474,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "access_token": "string"
+  "admin_token": "string"
 }
 ```
 
@@ -671,61 +687,6 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "please log in"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
-}
-```
-
-_Response (404 - Not Found)_
-
-```json
-{
-  "message": "Game not found"
-}
-```
-
-## 7. GET /admin/games/:id/open
-
-Description:
-
-- Opens selected game
-
-parameters
-
-- id: integer
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-body:
-
-_Response (200 - OK)_
-
-```json
-{
-  "data": {
-    "url": "string",
-    "qrCode": "object"
-  }
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "forbidden"
 }
 ```
 

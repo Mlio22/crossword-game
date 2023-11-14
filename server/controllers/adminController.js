@@ -31,9 +31,9 @@ module.exports = class AdminController {
         id: "admin",
       };
 
-      const access_token = createToken(payload);
+      const admin_token = createToken(payload);
 
-      return res.status(200).json({ access_token });
+      return res.status(200).json({ admin_token });
     } catch (error) {
       return next(error);
     }
