@@ -53,6 +53,7 @@ _GamePlayers_
 - GameSessionId: number, required
 - username: string, required
 - team: string, required
+- score: number, default: 0
 ```
 
 _SessionQuestions_
@@ -60,7 +61,7 @@ _SessionQuestions_
 ```
 - GameSessionId: number, required
 - QuestionId: number, required
-- isSolved: boolean, required
+- isSolved: boolean, default: false
 - solverPlayerId: number, nullable
 ```
 
