@@ -96,25 +96,24 @@ List of available endpoints:
 - `GET /admin/gameSession/:gameSessionId/result`
 
 <!-- todo -->
-- `GET /gameSession/:gameSessionId/:sessionQuestionsId`
 
+- `GET /gameSession/:gameSessionId/:sessionQuestionsId`
 
 &nbsp;
 
-# User Routes
+# Player Routes
 
 ## 1. POST /login
 
 Description:
 
-- Logs user in and returning access_token
+- Logs user in using google and returning access_token
 
 - body:
 
 ```json
 {
-  "email": "string (required)",
-  "password": "string (required)"
+  "googleProfileID": "number (required)"
 }
 ```
 
@@ -123,22 +122,6 @@ _Response (200 - OK)_
 ```json
 {
   "access_token": "string"
-}
-```
-
-_Response (400 - Bad Request)_
-
-```json
-{
-  "message": "Please fill the login form"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Wrong email / password"
 }
 ```
 
@@ -520,14 +503,6 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
-}
-```
-
 ## 3. GET /admin/games
 
 Description:
@@ -764,7 +739,7 @@ _Response (200 - OK)_
 {
   "data": {
     "url": "string",
-    "qrCode": "object",
+    "qrCode": "object"
   }
 }
 ```
@@ -819,7 +794,7 @@ _Response (200 - OK)_
 {
   "data": {
     "url": "string",
-    "qrCode": "object",
+    "qrCode": "object"
   }
 }
 ```
@@ -976,7 +951,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "message": "OK",
+  "message": "OK"
 }
 ```
 
@@ -1090,4 +1065,3 @@ _Response (500 - Internal Server Error)_
   "message": "Internal server error"
 }
 ```
-
