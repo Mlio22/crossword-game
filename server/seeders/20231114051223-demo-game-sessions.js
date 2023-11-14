@@ -19,17 +19,20 @@ module.exports = {
         {
           GameId: 1,
           status: "playing",
+          link: "google.com",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           GameId: 2,
+          link: "facebook.com",
           status: "Finished",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           GameId: 1,
+          link: "youtube.com",
           status: "waiting",
           createdAt: new Date(),
           updatedAt: new Date(),
