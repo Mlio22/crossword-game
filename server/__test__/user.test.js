@@ -26,7 +26,7 @@ describe("Admin Tests", () => {
   describe("POST /admin/login", () => {
     it("should login successfully and return access_token", async () => {
       const response = await request(app).post("/admin/login").send({
-        email: "admin1@example.com",
+        email: "admin@example.com",
         password: "12345678",
       });
 
