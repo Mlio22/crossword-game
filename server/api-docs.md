@@ -139,7 +139,7 @@ Description:
 ```json
 {
   "username": "string (required)",
-  "gameId": "integer (required)"
+  "gameSessionId": "integer (required)"
 }
 ```
 
@@ -197,8 +197,11 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": ["sessionQuestionID1", "sessionQuestionID2", ...],
-  "status": "playing | waiting | ended"
+  "data": [
+    "title": "string",
+    "sessionQuestionIDs": ["number", ...],
+    "status": "playing | waiting | ended"
+  ],
 }
 ```
 
@@ -270,12 +273,19 @@ _Response (200 - OK)_
     "word": "string",
     "GameId": "number",
     "startCoordinate": ["number", "number"],
-    "direction": "straightward | downward"
+    "direction": "straightward | downward",
+    "solver": "null" | {
+      "PlayerId": "number",
+      "username": "string"
+    },
+    "clues": [
+      {
+        "letter": "string",
+        "position": ["number", "number"]
+      }
+    ]
   },
-  "solver": "null" | {
-    "PlayerId": "number",
-    "username": "string"
-  }
+
 }
 ```
 
@@ -839,7 +849,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": ["questionID1", "questionID2", ...],
+  "data": ["questionSessionID1", "questionSessionID2", ...],
 }
 ```
 
@@ -945,13 +955,16 @@ _Response (200 - OK)_
 {
   "data": {
     "red": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": [
+        {
+          "PlayerID": "number",
+          "username": "string",
+          "score": "number"
+        },
+        ... ],
       "score": "number"
     },
-    "blue": {
-      "players": ["playerObject1", "playerObject2", ... ],
-      "score": "number"
-    }
+    "blue": {...}
   },
 }
 ```
