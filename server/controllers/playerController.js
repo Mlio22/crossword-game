@@ -1,3 +1,4 @@
+const { findClues } = require("../helpers/clues");
 const { createToken } = require("../helpers/jwt");
 const { randomTeam } = require("../helpers/random");
 const { Player, GamePlayer, GameSession, SessionQuestion, Question } = require("../models");
@@ -139,6 +140,50 @@ module.exports = class PlayerController {
 
   static async getQuestion(req, res, next) {
     try {
+      const { gameSessionId, sessionQuestionId } = req.params;
+
+      console.log(gameSessionId, sessionQuestionId);
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (selectedGameSession.status === "waiting") {
+        throw { name: "forbidden", message: "Game not started yet" };
+      }
+
+      const selectedQuestion = await SessionQuestion.findOne({
+        where: { id: sessionQuestionId, GameSessionId: gameSessionId },
+        include: [
+          {
+            model: GamePlayer,
+            as: "Solver",
+          },
+          Question,
+        ],
+      });
+
+      if (!selectedQuestion) {
+        throw { name: "notFound", message: "Question not found" };
+      }
+
+      // searching clues
+      const questions = await SessionQuestion.findAll({
+        where: {
+          GameSessionId: gameSessionId,
+          isSolved: true,
+        },
+        include: Question,
+      });
+
+      const clues = findClues(selectedQuestion, questions);
+      selectedQuestion.setDataValue("clues", clues);
+
+      return res.status(200).json({ selectedQuestion });
     } catch (error) {
       return next(error);
     }

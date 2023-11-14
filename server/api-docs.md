@@ -255,6 +255,14 @@ _Response (404 - Not Found)_
 
 ```json
 {
+  "message": "Game already started / ended"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
   "message": "Game not found"
 }
 ```
@@ -286,18 +294,14 @@ _Response (200 - OK)_
   "data": {
     "word": "string",
     "GameId": "number",
-    "startCoordinate": ["number", "number"],
+    "startCoordinateX": "number",
+    "startCoordinateY": "number",
     "direction": "straightward | downward",
-    "solver": "null" | {
+    "Solver": "null" | {
       "PlayerId": "number",
       "username": "string"
     },
-    "clues": [
-      {
-        "letter": "string",
-        "position": ["number", "number"]
-      }
-    ]
+    "clues": ["number", ...]
   },
 
 }
@@ -307,7 +311,17 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -316,6 +330,14 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "Invalid token"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
 }
 ```
 

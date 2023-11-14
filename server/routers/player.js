@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/login", PlayerController.login);
 router.post("/signup", [mustAuthenticated], PlayerController.signup);
 router.get("/gameSession/:gameSessionId", [mustAuthenticated], PlayerController.getSessionById);
-router.get("/gameSession/:gameSessionId/:sessionQuestionID", [mustAuthenticated], PlayerController.getQuestion);
-router.post("/gameSession/:gameSessionId/:sessionQuestionID", [mustAuthenticated], PlayerController.answerQuestion);
+router.get("/gameSession/:gameSessionId/:sessionQuestionId", [mustAuthenticated], PlayerController.getQuestion);
+router.post("/gameSession/:gameSessionId/:sessionQuestionId", [mustAuthenticated], PlayerController.answerQuestion);
 
 module.exports = router;

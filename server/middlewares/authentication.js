@@ -3,9 +3,10 @@ const { verifyToken } = require("../helpers/jwt");
 function mustAuthenticated(req, res, next) {
   try {
     const authorization = req.headers.authorization;
+    const { gameSessionId } = req?.params;
 
     if (!authorization) {
-      throw { name: "unauthorized", message: "please login first" };
+      throw { name: "unauthorized", message: "please login first", gameSessionId };
     }
 
     const [type, token] = authorization.split(" ");
