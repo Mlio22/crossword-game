@@ -95,6 +95,10 @@ List of available endpoints:
 - `GET /admin/gameSession/:gameSessionId/end`
 - `GET /admin/gameSession/:gameSessionId/result`
 
+<!-- todo -->
+- `GET /gameSession/:gameSessionId/:sessionQuestionsId`
+
+
 &nbsp;
 
 # User Routes

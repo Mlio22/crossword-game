@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json(200).send("it workds");
-});
+router.use("/", require("./player"));
+router.use("admin", require("./admin"));
 
 module.exports = router;
