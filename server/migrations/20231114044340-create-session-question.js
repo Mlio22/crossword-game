@@ -12,10 +12,18 @@ module.exports = {
       GameSessionId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "GameSessions",
+          key: "id",
+        },
       },
       QuestionId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "Questions",
+          key: "id",
+        },
       },
       isSolved: {
         allowNull: false,
@@ -24,6 +32,10 @@ module.exports = {
       solverPlayerId: {
         allowNull: true,
         type: Sequelize.INTEGER,
+        references: {
+          model: "Players",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,

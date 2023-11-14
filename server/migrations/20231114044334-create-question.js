@@ -15,7 +15,11 @@ module.exports = {
       },
       GameId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Games',
+          key: "id"
+        }
       },
       startCoordinateX: {
         allowNull: false,
@@ -23,7 +27,7 @@ module.exports = {
       },
       startCoordinateY: {
         allowNull: false,
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       direction: {
         allowNull: false,
