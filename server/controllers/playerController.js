@@ -1,5 +1,5 @@
 const { createToken } = require("../helpers/jwt");
-const { Player } = require("../models");
+const { Player, GamePlayer, GameSession } = require("../models");
 
 module.exports = class PlayerController {
   static async login(req, res, next) {
@@ -13,7 +13,7 @@ module.exports = class PlayerController {
       }
 
       const [selectedPlayer, createdPlayer] = await Player.findOrCreate({
-        where: {googleProfileID},
+        where: { googleProfileID },
         defaults: {
           googleProfileID,
         },
@@ -31,6 +31,31 @@ module.exports = class PlayerController {
 
   static async signup(req, res, next) {
     try {
+      const { username, gameSessionId } = req.body || {};
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+        attributes: [],
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (selectedGameSession.status !== "waiting") {
+        throw { name: "notFound", message: "Game already started / closed" };
+      }
+
+      const duplicateUsername = await GamePlayer.findOne({
+        where: {
+          username,
+          GameSessionId: gameSessionId,
+        },
+      });
+
+      if (duplicateUsername) {
+        throw { name: "badRequest", message: "Duplicate name" };
+      }
     } catch (error) {
       return next(error);
     }
