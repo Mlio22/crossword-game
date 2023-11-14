@@ -75,9 +75,10 @@ List of available endpoints:
 
 - `POST /login`
 - `POST /signup`
-- `GET /games/:gameId`
-- `GET /games/:gameId/:questionID`
-- `POST /games/:gameId/:questionID`
+- `GET /gameSession/:gameSessionId`
+- `GET /gameSession/:gameSessionId/result`
+- `GET /gameSession/:gameSessionId/:sessionQuestionsId`
+- `POST /gameSession/:gameSessionId/:sessionQuestionsId`
 - `GET /logout`
 
 ### Admin
@@ -87,15 +88,12 @@ List of available endpoints:
 - `GET /admin/games`
 - `POST /admin/games`
 - `PUT /admin/games/:id`
-- `DELETE /admin/games`
-- `GET /admin/games/:id`
-- `GET /admin/games/:id/open`
-- `GET /admin/games/:gameId/start`
-- `GET /admin/games/:gameId/end`
-- `GET /admin/games/:gameId/result`
-- `GET /admin/histories`
-- `GET /admin/histories/:id`
-- `DELETE /admin/histories/:id`
+- `DELETE /admin/games/:id`
+- `GET /admin/gameSession/:gameSessionId`
+- `GET /admin/gameSession/:gameSessionId/open`
+- `GET /admin/gameSession/:gameSessionId/start`
+- `GET /admin/gameSession/:gameSessionId/end`
+- `GET /admin/gameSession/:gameSessionId/result`
 
 &nbsp;
 
@@ -453,7 +451,7 @@ _Response (401 - Unauthorized)_
 
 # Admin Routes
 
-## 1. POST /login
+## 1. POST /admin/login
 
 Description:
 
@@ -496,7 +494,7 @@ _Response (401 - Unauthorized)_
 
 &nbsp;
 
-## 2. GET /logout
+## 2. GET /admin/logout
 
 Description:
 
@@ -526,7 +524,7 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-## 3. GET /games
+## 3. GET /admin/games
 
 Description:
 
@@ -570,7 +568,7 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-## 4. POST /games
+## 4. POST /admin/games
 
 Description:
 
@@ -625,7 +623,7 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-## 5. PUT /games/:id
+## 5. PUT /admin/games/:id
 
 Description:
 
@@ -684,7 +682,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 6. DELETE /games/:id
+## 6. DELETE /admin/games/:id
 
 Description:
 
@@ -736,7 +734,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 7. GET /games/:id/open
+## 7. GET /admin/games/:id/open
 
 Description:
 
@@ -791,7 +789,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 7. GET /games/:id/open
+## 7. GET /admin/games/:id/open
 
 Description:
 
@@ -846,7 +844,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 8. GET /gameSession/:gameSessionId/start
+## 8. GET /admin/gameSession/:gameSessionId/start
 
 Description:
 
@@ -898,7 +896,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 9. GET /gameSession/:gameSessionId
+## 9. GET /admin/gameSession/:gameSessionId
 
 Description:
 
@@ -950,7 +948,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 9. GET /gameSession/:gameSessionId/end
+## 9. GET /admin/gameSession/:gameSessionId/end
 
 Description:
 
@@ -1002,7 +1000,7 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 10. GET /gameSession/:gameSessionId/result
+## 10. GET /admin/gameSession/:gameSessionId/result
 
 Description:
 
