@@ -92,3 +92,68 @@ describe("Admin Tests", () => {
   });
 });
 
+describe("Player Tests", () => {
+  const playerData = {
+    googleProfileID: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  beforeAll(async () => {
+    await Player.bulkCreate([playerData]);
+  });
+
+  afterAll(async () => {
+    await Player.destroy({
+      truncate: true,
+      restartIdentity: true,
+      cascade: true,
+    });
+  });
+
+  describe("POST /login", () => {
+    it("should logs new user in", async () => {
+      const response = await request(app).post("/login").send({
+        googleProfileID: 2,
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body).toHaveProperty("access_token", expect.any(String));
+      expect(response.body.access_token).toContain("Bearer ");
+    });
+
+    it("should logs old user in too", async () => {
+      const response = await request(app).post("/login").send({
+        googleProfileID: 1,
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body).toHaveProperty("access_token", expect.any(String));
+      expect(response.body.access_token).toContain("Bearer ");
+    });
+  });
+
+  describe("GET /logout", () => {
+    let token;
+
+    beforeAll(async () => {
+      const response = await request(app).post("/login").send({
+        googleProfileID: 1,
+      });
+
+      token = response.body.access_token;
+    });
+
+    it("should logged out successfully and return 200", async () => {
+      const response = await request(app)
+        .get("/logout")
+        .set("Authorization", "Bearer " + token);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body).toHaveProperty("message", "logged out succesfully");
+    });
+  });
+});
