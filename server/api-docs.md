@@ -199,7 +199,27 @@ _Response (200 - OK)_
 {
   "data": [
     "title": "string",
-    "sessionQuestionIDs": ["number", ...],
+    "sessionQuestions": [] | [
+      {
+        "GameSessionId": "number",
+        "QuestionId": "number",
+        "isSolved": "boolean",
+        "SolverPlayerId": "number",
+        "Questions": [
+          {
+            "word": "string",
+            "hint": "string",
+            "coordinates": ["number", "number"],
+            "direction": "straightward" | "downward"
+          }
+        ],
+        "Solver": "null" |  {
+          "username": "string",
+          "solvedAt": "date"
+        }
+      },
+      ...
+    ],
     "status": "playing | waiting | ended"
   ],
 }
@@ -209,7 +229,8 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Please log in"
+  "message": "Please log in",
+  "gameSessionId": "number"
 }
 ```
 
@@ -217,7 +238,8 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -226,14 +248,6 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "Invalid token"
-}
-```
-
-_Response (404 - Not Found)_
-
-```json
-{
-  "message": "Game already started / closed"
 }
 ```
 

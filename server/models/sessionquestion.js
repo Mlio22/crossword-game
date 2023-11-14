@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       SessionQuestion.belongsTo(models.GameSession);
       SessionQuestion.belongsTo(models.Question);
-      SessionQuestion.belongsTo(models.GamePlayer);
+      SessionQuestion.belongsTo(models.GamePlayer, { as: "Solver", foreignKey: "SolverPlayerId" });
     }
   }
   SessionQuestion.init(
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      solverPlayerId: {
+      SolverPlayerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
