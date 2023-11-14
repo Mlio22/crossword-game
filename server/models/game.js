@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Game.hasMany(models.GameSession);
+      Game.hasMany(models.Question);
     }
   }
   Game.init(
