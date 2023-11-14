@@ -60,8 +60,8 @@ _SessionQuestions_
 ```
 - GameSessionId: number, required
 - QuestionId: number, required
-- isSolved: boolean
-- solverPlayerId: number, required
+- isSolved: boolean, required
+- solverPlayerId: number, nullable
 ```
 
 &nbsp;
