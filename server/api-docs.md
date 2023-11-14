@@ -207,7 +207,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -215,7 +215,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -276,7 +276,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -284,7 +284,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -345,7 +345,7 @@ _Response (400 - bad request)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -353,7 +353,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -404,7 +404,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -442,7 +442,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -517,7 +517,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -553,15 +553,15 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please sign in"
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -608,15 +608,15 @@ _Response (400 - bad request)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -659,15 +659,15 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please"
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -711,7 +711,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -719,7 +719,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -766,7 +766,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -774,7 +774,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -821,7 +821,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -829,7 +829,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -873,7 +873,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -881,7 +881,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -925,7 +925,7 @@ _Response (200 - OK)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -933,7 +933,7 @@ _Response (403 - forbidden)_
 }
 ```
 
-_Response (403 - forbidden)_
+_Response (401 - Unauthorized)_
 
 ```json
 {
@@ -951,10 +951,140 @@ _Response (404 - Not Found)_
 
 ## 9. GET /gameSession/:gameSessionId/end
 
+Description:
+
+- Ends selected game session
+
+parameters
+
+- gameSessionId: integer
+
+headers:
+
+```json
+{
+  "authorization": "Bearer <JWT_TOKEN>"
+}
+```
+
+body:
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "OK",
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "forbidden"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game not found"
+}
+```
+
 ## 10. GET /gameSession/:gameSessionId/result
 
-## 11. GET /histories
+Description:
 
-## 12. GET /histories/:id
+- Get game result from selected id
 
-## 13. DELETE /histories/:id
+parameters
+
+- gameSessionId: integer
+
+headers:
+
+```json
+{
+  "authorization": "Bearer <JWT_TOKEN>"
+}
+```
+
+body:
+
+_Response (200 - OK)_
+
+```json
+{
+  "data": {
+    "red": {
+      "players": ["playerObject1", "playerObject2", ... ],
+      "score": "number"
+    },
+    "blue": {
+      "players": ["playerObject1", "playerObject2", ... ],
+      "score": "number"
+    }
+  },
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "forbidden"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game not found"
+}
+```
+
+## Global Error
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please sign in"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
