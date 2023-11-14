@@ -82,20 +82,20 @@ List of available endpoints:
 
 ### Admin
 
-- `POST /login`
-- `GET /logout`
-- `GET /games`
-- `POST /games`
-- `PUT /games/:id`
-- `DELETE /games`
-- `GET /games/:id`
-- `GET /games/:id/open`
-- `GET /games/:gameId/start`
-- `GET /games/:gameId/end`
-- `GET /games/:gameId/result`
-- `GET /histories`
-- `GET /histories/:id`
-- `DELETE /histories/:id`
+- `POST /admin/login`
+- `GET /admin/logout`
+- `GET /admin/games`
+- `POST /admin/games`
+- `PUT /admin/games/:id`
+- `DELETE /admin/games`
+- `GET /admin/games/:id`
+- `GET /admin/games/:id/open`
+- `GET /admin/games/:gameId/start`
+- `GET /admin/games/:gameId/end`
+- `GET /admin/games/:gameId/result`
+- `GET /admin/histories`
+- `GET /admin/histories/:id`
+- `DELETE /admin/histories/:id`
 
 &nbsp;
 
