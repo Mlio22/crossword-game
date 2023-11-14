@@ -1,5 +1,6 @@
 const { createToken } = require("../helpers/jwt");
-const { Player, GamePlayer, GameSession } = require("../models");
+const { randomTeam } = require("../helpers/random");
+const { Player, GamePlayer, GameSession, SessionQuestions, Question } = require("../models");
 
 module.exports = class PlayerController {
   static async login(req, res, next) {
@@ -33,9 +34,16 @@ module.exports = class PlayerController {
     try {
       const { username, gameSessionId } = req.body || {};
 
+      if (!username) {
+        throw { name: "badRequest", message: "Please fill the username" };
+      }
+
+      if (!gameSessionId) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
       const selectedGameSession = await GameSession.findOne({
         where: { id: gameSessionId },
-        attributes: [],
       });
 
       if (!selectedGameSession) {
@@ -56,6 +64,16 @@ module.exports = class PlayerController {
       if (duplicateUsername) {
         throw { name: "badRequest", message: "Duplicate name" };
       }
+
+      const { id: PlayerId } = req.user;
+      await GamePlayer.create({
+        PlayerId,
+        GameSessionId: gameSessionId,
+        username,
+        team: randomTeam(),
+      });
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
