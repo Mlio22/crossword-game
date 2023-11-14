@@ -1,6 +1,6 @@
-const app = require(".app");
+const app = require("../app");
 const request = require("supertest");
-const { Admin, Player } = required("../models");
+const { Admin, Player } = require("../models");
 const { hashPass } = require("../helpers/bcrypt");
 
 describe("Admin Tests", () => {

@@ -693,7 +693,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -855,7 +855,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -907,7 +907,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -959,7 +959,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -1028,7 +1028,7 @@ _Response (403 - forbidden)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
