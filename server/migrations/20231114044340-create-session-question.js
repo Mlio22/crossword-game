@@ -29,7 +29,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
-      solverPlayerId: {
+      SolverPlayerId: {
         allowNull: true,
         type: Sequelize.INTEGER,
         references: {
