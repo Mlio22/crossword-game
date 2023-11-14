@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Question extends Model {
     /**
@@ -13,15 +11,73 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Question.init({
-    word: DataTypes.STRING,
-    GameId: DataTypes.INTEGER,
-    startCoordinateX: DataTypes.INTEGER,
-    startCoordinateY: DataTypes.NUMBER,
-    direction: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Question',
-  });
+  Question.init(
+    {
+      word: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Word should not empty",
+          },
+          notNull: {
+            msg: "Word should not null",
+          },
+        },
+      },
+      GameId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Game ID should not empty",
+          },
+          notNull: {
+            msg: "Game ID should not null",
+          },
+        },
+      },
+      startCoordinateX: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Start Coordinate X should not empty",
+          },
+          notNull: {
+            msg: "Start Coordinate X should not null",
+          },
+        },
+      },
+      startCoordinateY: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Start Coordinate Y should not empty",
+          },
+          notNull: {
+            msg: "Start Coordinate Y should not null",
+          },
+        },
+      },
+      direction: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Direction should not empty",
+          },
+          notNull: {
+            msg: "Direction should not null",
+          },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Question",
+    }
+  );
   return Question;
 };

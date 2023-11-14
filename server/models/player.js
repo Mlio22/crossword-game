@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
     /**
@@ -13,11 +11,28 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Player.init({
-    googleProfileID: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Player',
-  });
+  Player.init(
+    {
+      googleProfileID: {
+        type: DataTypes.STRING,
+        unique: {
+          msg: "Google Id must be unique",
+        },
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Google Id should not empty",
+          },
+          notNull: {
+            msg: "Google Id should not null",
+          },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Player",
+    }
+  );
   return Player;
 };

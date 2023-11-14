@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Game extends Model {
     /**
@@ -13,11 +11,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Game.init({
-    title: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Game',
-  });
+  Game.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "title should not empty",
+          },
+          notNull: {
+            msg: "title should not null",
+          },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Game",
+    }
+  );
   return Game;
 };
