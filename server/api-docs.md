@@ -437,7 +437,7 @@ _Response (401 - Unauthorized)_
 
 # Admin Routes
 
-## 1. POST /admin/login
+## 1. POST /admin/login (done)
 
 Description:
 
@@ -479,28 +479,6 @@ _Response (401 - Unauthorized)_
 ```
 
 &nbsp;
-
-## 2. GET /admin/logout
-
-Description:
-
-- Logs admin out
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-_Response (200 - OK)_
-
-```json
-{
-  "message": "logged out succesfully"
-}
-```
 
 ## 3. GET /admin/games
 
