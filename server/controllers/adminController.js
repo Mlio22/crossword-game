@@ -1,7 +1,8 @@
 const { hashPass, comparePass } = require("../helpers/bcrypt");
+const { createGameSessionLink } = require("../helpers/bitly");
 const { createToken } = require("../helpers/jwt");
 const { validateGame, validateGameObject } = require("../helpers/validateGame");
-const { Admin, Game, Question } = require("../models");
+const { Admin, Game, Question, GameSession, sequelize } = require("../models");
 
 module.exports = class AdminController {
   static async login(req, res, next) {
@@ -168,21 +169,52 @@ module.exports = class AdminController {
     }
   }
 
-  static async getSession(req, res, next) {
-    try {
-    } catch (error) {
-      return next(error);
-    }
-  }
-
   static async openSession(req, res, next) {
     try {
+      const { id } = req.params;
+
+      const selectedGame = await Game.findByPk(id, {});
+
+      if (!selectedGame) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      const openSessionTransaction = await sequelize.transaction();
+
+      try {
+        const createdSession = await GameSession.create(
+          {
+            GameId: id,
+            link: "test",
+          },
+          { transaction: openSessionTransaction }
+        );
+
+        const link = await createGameSessionLink(createdSession.id);
+
+        await createdSession.update({ link }, { transaction: openSessionTransaction });
+        await openSessionTransaction.commit();
+
+        return res.status(200).json({
+          id: createdSession.id,
+        });
+      } catch (error) {
+        await openSessionTransaction.rollback();
+        next(error);
+      }
     } catch (error) {
       return next(error);
     }
   }
 
   static async startSession(req, res, next) {
+    try {
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  static async getSession(req, res, next) {
     try {
     } catch (error) {
       return next(error);

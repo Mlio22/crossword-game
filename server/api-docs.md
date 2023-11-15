@@ -90,8 +90,8 @@ List of available endpoints:
 - `POST /admin/games`
 - `PUT /admin/games/:id`
 - `DELETE /admin/games/:id`
+- `GET /admin/games/:id/open`
 - `GET /admin/gameSession/:gameSessionId`
-- `GET /admin/gameSession/:gameSessionId/open`
 - `GET /admin/gameSession/:gameSessionId/start`
 - `GET /admin/gameSession/:gameSessionId/end`
 - `GET /admin/gameSession/:gameSessionId/result`
@@ -851,8 +851,7 @@ _Response (200 - OK)_
 ```json
 {
   "data": {
-    "url": "string",
-    "qrCode": "object"
+    "id": "number",
   }
 }
 ```
@@ -861,7 +860,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please login first"
 }
 ```
 
