@@ -3,21 +3,17 @@ import { Drawer, Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import SERVER from "../../../constants";
 
-export default function AddForm({ open, closeDrawer }) {
-  const [gameFiles, setGameFiles] = useState({});
+export default function UpdateForm({ open, closeDrawer, data }) {
+  const [gameFile, setGameFile] = useState({});
   const [isWorking, setIsWorking] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
   let inputtedElement;
-  if (gameFiles[0]) {
-    const gameNames = Object.keys(gameFiles)
-      .map((key) => gameFiles[key].name)
-      .join(", ");
-
+  if (gameFile?.name) {
     inputtedElement = (
       <>
         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-          <span className="font-semibold">Uploaded file(s): {gameNames}</span>
+          <span className="font-semibold">Uploaded file: {gameFile.name}</span>
         </p>
       </>
     );
@@ -33,28 +29,26 @@ export default function AddForm({ open, closeDrawer }) {
   }
 
   useEffect(() => {
-    const newStatus = gameFiles?.length ? false : true;
+    const newStatus = gameFile?.name ? false : true;
     setIsDisabled(newStatus);
-  }, [gameFiles]);
+  }, [gameFile]);
 
   function handleInput(event) {
-    setGameFiles(event.target.files);
+    setGameFile(event.target.files[0]);
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (!gameFiles?.length) return;
+    if (!gameFile?.name) return;
 
     const formData = new FormData();
-    for (let i = 0; i < gameFiles.length; i++) {
-      formData.append("gameFiles", gameFiles[i]);
-    }
+    formData.append("gameFile", gameFile);
 
     let message;
     try {
       setIsWorking(true);
-      await axios.post(`${SERVER}/admin/games`, formData, {
+      await axios.put(`${SERVER}/admin/games/${data.id}`, formData, {
         headers: {
           Authorization: "Bearer " + localStorage.admin_token,
           "Content-Type": "multipart/form-data",
@@ -63,11 +57,11 @@ export default function AddForm({ open, closeDrawer }) {
 
       message = {
         type: "success",
-        text: "Game(s) added",
+        text: "Game Updated",
       };
 
-      setGameFiles({});
-      document.getElementById("gameFiles").value = null;
+      setGameFile({});
+      document.getElementById("gameFile").value = null;
     } catch (error) {
       console.log(error);
 
@@ -85,8 +79,8 @@ export default function AddForm({ open, closeDrawer }) {
   }
 
   function handleClose() {
-    setGameFiles({});
-    document.getElementById("gameFiles").value = null;
+    setGameFile({});
+    document.getElementById("gameFile").value = null;
     closeDrawer();
   }
 
@@ -109,8 +103,10 @@ export default function AddForm({ open, closeDrawer }) {
 
         <div className="p-4">
           <h5 id="drawer-label" className="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">
-            Add Game (s)
+            Update Game
           </h5>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Game title: {data.title}</p>
+
           <button
             type="button"
             className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -132,7 +128,7 @@ export default function AddForm({ open, closeDrawer }) {
             <div className="space-y-4">
               <div className="flex items-center justify-center w-full h-full">
                 <label
-                  htmlFor="gameFiles"
+                  htmlFor="gameFile"
                   className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -153,7 +149,7 @@ export default function AddForm({ open, closeDrawer }) {
                     </svg>
                     {inputtedElement}
                   </div>
-                  <input id="gameFiles" type="file" className="hidden" multiple onChange={handleInput} />
+                  <input id="gameFile" type="file" className="hidden" onChange={handleInput} />
                 </label>
               </div>
             </div>
@@ -163,7 +159,7 @@ export default function AddForm({ open, closeDrawer }) {
                 disabled={isDisabled}
                 className="w-full justify-center text-white transition-all bg-primary-700 disabled:bg-gray-700 enabled:hover:bg-primary-800 enabled:focus:ring-4 enabled:focus:outline-none enabled:focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:enabled:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Add Game(s)
+                Update Game
               </button>
             </div>
           </form>

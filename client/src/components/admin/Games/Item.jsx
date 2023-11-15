@@ -1,6 +1,6 @@
 import Button from "../Button";
 
-export default function Item({ game }) {
+export default function Item({ game, openDrawer }) {
   return (
     <>
       <tr className="hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -8,9 +8,9 @@ export default function Item({ game }) {
           <div className="text-base font-semibold text-gray-900 dark:text-white">{game.title}</div>
         </td>
         <td className="p-4 space-x-2 whitespace-nowrap">
-          <Button name={"openButton"} text={"Open Session"} />
-          <Button name={"updateButton"} text={"Update Game"} />
-          <Button name={"deleteButton"} text={"Delete Game"} />
+          <Button openDrawer={() => openDrawer('open')} name={"openButton"} text={"Open Session"} />
+          <Button openDrawer={() => openDrawer('update', game)} name={"updateButton"} text={"Update Game"} />
+          <Button openDrawer={() => openDrawer('delete', game)} name={"deleteButton"} text={"Delete Game"} />
         </td>
       </tr>
     </>
