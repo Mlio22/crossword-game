@@ -20,7 +20,7 @@ _Admins_
 _Players_
 
 ```
-- googleProfileID: string, required
+- googleProfileID: string, unique, required
 ```
 
 _Games_
@@ -33,6 +33,7 @@ _Questions_
 
 ```
 - word: string, required
+- hint: string, required
 - GameId: number, required
 - startCoordinateX: number, required
 - startCoordinateY: number, required
@@ -43,7 +44,8 @@ _GameSessions_
 
 ```
 - GameId: number, required
-- status: string, required
+- status: string, required, default: "waiting"
+- link: string, required
 ```
 
 _GamePlayers_
@@ -53,7 +55,7 @@ _GamePlayers_
 - GameSessionId: number, required
 - username: string, required
 - team: string, required
-- score: number, default: 0
+- score: number, required, default: 0
 ```
 
 _SessionQuestions_
@@ -62,7 +64,7 @@ _SessionQuestions_
 - GameSessionId: number, required
 - QuestionId: number, required
 - isSolved: boolean, default: false
-- solverPlayerId: number, nullable
+- SolverPlayerId: number, nullable
 ```
 
 &nbsp;
@@ -79,18 +81,16 @@ List of available endpoints:
 - `GET /gameSession/:gameSessionId/result`
 - `GET /gameSession/:gameSessionId/:sessionQuestionsId`
 - `POST /gameSession/:gameSessionId/:sessionQuestionsId`
-- `GET /logout`
 
 ### Admin
 
 - `POST /admin/login`
-- `GET /admin/logout`
 - `GET /admin/games`
 - `POST /admin/games`
 - `PUT /admin/games/:id`
 - `DELETE /admin/games/:id`
+- `GET /admin/games/:id/open`
 - `GET /admin/gameSession/:gameSessionId`
-- `GET /admin/gameSession/:gameSessionId/open`
 - `GET /admin/gameSession/:gameSessionId/start`
 - `GET /admin/gameSession/:gameSessionId/end`
 - `GET /admin/gameSession/:gameSessionId/result`
@@ -113,7 +113,7 @@ Description:
 
 ```json
 {
-  "googleProfileID": "number (required)"
+  "googleProfileID": "string (required)"
 }
 ```
 
@@ -138,7 +138,7 @@ Description:
 ```json
 {
   "username": "string (required)",
-  "gameId": "integer (required)"
+  "gameSessionId": "integer (required)"
 }
 ```
 
@@ -155,6 +155,14 @@ _Response (400 - Bad Request)_
 ```json
 {
   "message": "Please fill the username"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please log in"
 }
 ```
 
@@ -188,8 +196,31 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": ["sessionQuestionID1", "sessionQuestionID2", ...],
-  "status": "playing | waiting | ended"
+  "data": {
+    "title": "string",
+    "sessionQuestions": [] | [
+      {
+        "GameSessionId": "number",
+        "QuestionId": "number",
+        "isSolved": "boolean",
+        "SolverPlayerId": "number",
+        "Questions": [
+          {
+            "word": "string",
+            "hint": "string",
+            "coordinates": ["number", "number"],
+            "direction": "straightward" | "downward"
+          }
+        ],
+        "Solver": "null" |  {
+          "username": "string",
+          "solvedAt": "date"
+        }
+      },
+      ...
+    ],
+    "status": "playing | waiting | ended"
+  },
 }
 ```
 
@@ -197,7 +228,17 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -213,7 +254,7 @@ _Response (404 - Not Found)_
 
 ```json
 {
-  "message": "Game already started / closed"
+  "message": "Game already started / ended"
 }
 ```
 
@@ -252,13 +293,16 @@ _Response (200 - OK)_
   "data": {
     "word": "string",
     "GameId": "number",
-    "startCoordinate": ["number", "number"],
-    "direction": "straightward | downward"
+    "startCoordinateX": "number",
+    "startCoordinateY": "number",
+    "direction": "straightward | downward",
+    "Solver": "null" | {
+      "PlayerId": "number",
+      "username": "string"
+    },
+    "clues": ["number", ...]
   },
-  "solver": "null" | {
-    "PlayerId": "number",
-    "username": "string"
-  }
+
 }
 ```
 
@@ -266,7 +310,17 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -278,11 +332,25 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
 _Response (404 - Not Found)_
 
 ```json
 {
   "message": "Question not found"
+}
+```
+
+```json
+{
+  "message": "Game not found"
 }
 ```
 
@@ -311,7 +379,7 @@ body:
 
 ```json
 {
-  "answer": "string"
+  "answer": "string (required)"
 }
 ```
 
@@ -327,7 +395,7 @@ _Response (400 - bad request)_
 
 ```json
 {
-  "message": "Must fill the answer"
+  "message": "Please fill the answer"
 }
 ```
 
@@ -335,7 +403,17 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -347,11 +425,25 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
 _Response (404 - Not Found)_
 
 ```json
 {
   "message": "Question not found"
+}
+```
+
+```json
+{
+  "message": "Game not found"
 }
 ```
 
@@ -363,7 +455,7 @@ Description:
 
 parameters:
 
-- gameId: integer
+- gameSessionId: integer
 
 headers:
 
@@ -379,11 +471,11 @@ _Response (200 - OK)_
 {
   "data": {
     "red": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     },
     "blue": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     }
   },
@@ -398,6 +490,40 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not finished yet"
+}
+```
+
 _Response (404 - Not Found)_
 
 ```json
@@ -406,43 +532,13 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 7. GET /logout
-
-Description:
-
-- Logs player out of their google account
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-_Response (200 - OK)_
-
-```json
-{
-  "message": "logged out succesfully"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
-}
-```
-
 # Admin Routes
 
-## 1. POST /admin/login
+## 1. POST /admin/login (done)
 
 Description:
 
-- Logs user in and returning access_token
+- Logs user in and returning admin_token
 
 Request:
 
@@ -459,7 +555,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "access_token": "string"
+  "admin_token": "string"
 }
 ```
 
@@ -480,28 +576,6 @@ _Response (401 - Unauthorized)_
 ```
 
 &nbsp;
-
-## 2. GET /admin/logout
-
-Description:
-
-- Logs admin out
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-_Response (200 - OK)_
-
-```json
-{
-  "message": "logged out succesfully"
-}
-```
 
 ## 3. GET /admin/games
 
@@ -565,8 +639,7 @@ body:
 
 ```json
 {
-  "name": "string (required)",
-  "gameFile": "game file (JSON) (required)"
+  "gameFiles": "game file (JSONs) (required)"
 }
 ```
 
@@ -574,7 +647,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "message": "OK"
+  "message": "Successfully created "number" game(s)"
 }
 ```
 
@@ -583,6 +656,22 @@ _Response (400 - bad request)_
 ```json
 {
   "message": "please fill the form"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid file(s)"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid Game(s)"
 }
 ```
 
@@ -624,8 +713,7 @@ body:
 
 ```json
 {
-  "name": "string (optional)",
-  "gameFile": "game file (JSON) (optional)"
+  "gameFile": "game file (JSON) (required)"
 }
 ```
 
@@ -637,11 +725,35 @@ _Response (200 - OK)_
 }
 ```
 
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "please fill the form"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid file"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid Game"
+}
+```
+
 _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "please"
+  "message": "please log in"
 }
 ```
 
@@ -693,7 +805,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -738,8 +850,7 @@ _Response (200 - OK)_
 ```json
 {
   "data": {
-    "url": "string",
-    "qrCode": "object"
+    "id": "number"
   }
 }
 ```
@@ -748,7 +859,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please login first"
 }
 ```
 
@@ -768,15 +879,15 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 7. GET /admin/games/:id/open
+## 9. GET /admin/gameSession/:gameSessionId
 
 Description:
 
-- Opens selected game
+- Gets All Question data from selected game
 
 parameters
 
-- id: integer
+- gameSessionId: integer
 
 headers:
 
@@ -786,16 +897,35 @@ headers:
 }
 ```
 
-body:
-
 _Response (200 - OK)_
 
 ```json
 {
   "data": {
-    "url": "string",
-    "qrCode": "object"
-  }
+    "title": "string",
+    "sessionQuestions": [] | [
+      {
+        "GameSessionId": "number",
+        "QuestionId": "number",
+        "isSolved": "boolean",
+        "SolverPlayerId": "number",
+        "Questions": [
+          {
+            "word": "string",
+            "hint": "string",
+            "coordinates": ["number", "number"],
+            "direction": "straightward" | "downward"
+          }
+        ],
+        "Solver": "null" |  {
+          "username": "string",
+          "solvedAt": "date"
+        }
+      },
+      ...
+    ],
+    "status": "playing | waiting | ended"
+  },
 }
 ```
 
@@ -803,7 +933,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -855,7 +985,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -867,55 +997,11 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-_Response (404 - Not Found)_
+_Response (403 - Forbidden)_
 
 ```json
 {
-  "message": "Game not found"
-}
-```
-
-## 9. GET /admin/gameSession/:gameSessionId
-
-Description:
-
-- Gets All Question data from selected game
-
-parameters
-
-- gameSessionId: integer
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-body:
-
-_Response (200 - OK)_
-
-```json
-{
-  "data": ["questionID1", "questionID2", ...],
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "forbidden"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
+  "message": "Game Already Started / Ended"
 }
 ```
 
@@ -959,7 +1045,7 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
 }
 ```
 
@@ -968,6 +1054,14 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "Invalid token"
+}
+```
+
+_Response (403 - Forbidden)_
+
+```json
+{
+  "message": "Game not started or already ended"
 }
 ```
 
@@ -1001,20 +1095,20 @@ body:
 
 _Response (200 - OK)_
 
-```json
+````json
 {
   "data": {
     "red": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     },
     "blue": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     }
   },
 }
-```
+````
 
 _Response (401 - Unauthorized)_
 
@@ -1028,7 +1122,23 @@ _Response (403 - forbidden)_
 
 ```json
 {
-  "message": "forbidden"
+  "message": "please log in"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not finished yet"
 }
 ```
 

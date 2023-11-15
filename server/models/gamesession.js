@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class GameSession extends Model {
     /**
@@ -11,14 +9,54 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      GameSession.belongsTo(models.Game);
+      GameSession.hasMany(models.GamePlayer);
     }
   }
-  GameSession.init({
-    GameId: DataTypes.INTEGER,
-    status: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'GameSession',
-  });
+  GameSession.init(
+    {
+      GameId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Game id should not empty",
+          },
+          notNull: {
+            msg: "Game id should not null",
+          },
+        },
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "waiting",
+        validate: {
+          notEmpty: {
+            msg: "status should not empty",
+          },
+          notNull: {
+            msg: "status should not null",
+          },
+        },
+      },
+      link: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "link should not empty",
+          },
+          notNull: {
+            msg: "link should not null",
+          },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "GameSession",
+    }
+  );
   return GameSession;
 };

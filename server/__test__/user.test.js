@@ -1,6 +1,6 @@
-const app = require(".app");
+const app = require("../app");
 const request = require("supertest");
-const { Admin, Player } = required("../models");
+const { Admin, Player } = require("../models");
 const { hashPass } = require("../helpers/bcrypt");
 
 describe("Admin Tests", () => {
@@ -26,7 +26,7 @@ describe("Admin Tests", () => {
   describe("POST /admin/login", () => {
     it("should login successfully and return access_token", async () => {
       const response = await request(app).post("/admin/login").send({
-        email: "admin1@example.com",
+        email: "admin@example.com",
         password: "12345678",
       });
 
