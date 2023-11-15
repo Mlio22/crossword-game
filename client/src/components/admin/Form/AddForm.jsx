@@ -67,6 +67,7 @@ export default function AddForm({ open, closeDrawer }) {
       };
 
       setGameFiles({});
+      document.getElementById("gameFiles").value = null;
     } catch (error) {
       console.log(error);
 
@@ -85,6 +86,7 @@ export default function AddForm({ open, closeDrawer }) {
 
   function handleClose() {
     setGameFiles({});
+    document.getElementById("gameFiles").value = null;
     closeDrawer();
   }
 
@@ -130,7 +132,7 @@ export default function AddForm({ open, closeDrawer }) {
             <div className="space-y-4">
               <div className="flex items-center justify-center w-full h-full">
                 <label
-                  htmlFor="dropzone-file"
+                  htmlFor="gameFiles"
                   className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -151,7 +153,7 @@ export default function AddForm({ open, closeDrawer }) {
                     </svg>
                     {inputtedElement}
                   </div>
-                  <input id="dropzone-file" type="file" className="hidden" multiple onChange={handleInput} />
+                  <input id="gameFiles" type="file" className="hidden" multiple onChange={handleInput} />
                 </label>
               </div>
             </div>
