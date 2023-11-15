@@ -137,7 +137,7 @@ module.exports = class AdminController {
         await Question.create({ ...question, GameId: id });
       }
 
-      res.status(200).json({ message: "OK" });
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
@@ -145,6 +145,24 @@ module.exports = class AdminController {
 
   static async deleteGame(req, res, next) {
     try {
+      const { id } = req.params;
+
+      const selectedGame = await Game.findByPk(id, {});
+
+      if (!selectedGame) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      // todo: tambahkan onDelete dan onUpdate pada tabel yang diperlukan
+      await Question.destroy({
+        where: {
+          GameId: id,
+        },
+      });
+
+      await selectedGame.destroy();
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
