@@ -11,7 +11,7 @@ const router = express.Router();
 router.post("/login", AdminController.login);
 router.get("/games", [mustAdmin], AdminController.getGames);
 router.post("/games", [mustAdmin], upload.array('gameFiles'), AdminController.createGame);
-router.put("/games/:id", [mustAdmin], AdminController.updateGame);
+router.put("/games/:id", [mustAdmin], upload.single('gameFile'), AdminController.updateGame);
 router.delete("/games/:id", [mustAdmin], AdminController.deleteGame);
 router.get("/games/:id", [mustAdmin], AdminController.getSession);
 router.get("/games/:id/open", [mustAdmin], AdminController.openSession);
