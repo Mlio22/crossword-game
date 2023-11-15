@@ -2,7 +2,7 @@ const { hashPass, comparePass } = require("../helpers/bcrypt");
 const { createGameSessionLink } = require("../helpers/bitly");
 const { createToken } = require("../helpers/jwt");
 const { validateGame, validateGameObject } = require("../helpers/validateGame");
-const { Admin, Game, Question, GameSession, sequelize } = require("../models");
+const { Admin, Game, Question, GameSession, SessionQuestion, GamePlayer, sequelize } = require("../models");
 
 module.exports = class AdminController {
   static async login(req, res, next) {
@@ -207,14 +207,58 @@ module.exports = class AdminController {
     }
   }
 
-  static async startSession(req, res, next) {
+  static async getSession(req, res, next) {
     try {
+      const { gameSessionId } = req.params;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+        include: Game,
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      const {
+        status,
+        link,
+        Game: { title },
+      } = selectedGameSession;
+
+      let data = {
+        title,
+        link,
+        sessionQuestions: [],
+        status,
+      };
+
+      if (status !== "waiting") {
+        const sessionQuestions = await SessionQuestion.findAll({
+          where: {
+            GameSessionId: gameSessionId,
+          },
+          include: [
+            {
+              model: Question,
+            },
+            {
+              model: GamePlayer,
+              as: "Solver",
+            },
+          ],
+        });
+
+        data.sessionQuestions = sessionQuestions;
+      }
+
+      return res.status(200).json(data);
     } catch (error) {
       return next(error);
     }
   }
 
-  static async getSession(req, res, next) {
+  static async startSession(req, res, next) {
     try {
     } catch (error) {
       return next(error);

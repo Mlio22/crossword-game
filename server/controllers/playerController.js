@@ -86,17 +86,19 @@ module.exports = class PlayerController {
 
       const selectedGameSession = await GameSession.findOne({
         where: { id: gameSessionId },
+        include: Game
       });
 
-      const { title, status } = selectedGameSession;
+      const { status, link, Game: {title} } = selectedGameSession;
 
       let data = {
         title,
+        link,
         sessionQuestions: [],
         status,
       };
 
-      if (status !== "playing") {
+      if (status !== "waiting") {
         const sessionQuestions = await SessionQuestion.findAll({
           where: {
             GameSessionId: gameSessionId,

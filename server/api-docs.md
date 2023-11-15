@@ -197,7 +197,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": [
+  "data": {
     "title": "string",
     "sessionQuestions": [] | [
       {
@@ -221,7 +221,7 @@ _Response (200 - OK)_
       ...
     ],
     "status": "playing | waiting | ended"
-  ],
+  },
 }
 ```
 
@@ -851,7 +851,7 @@ _Response (200 - OK)_
 ```json
 {
   "data": {
-    "id": "number",
+    "id": "number"
   }
 }
 ```
@@ -861,6 +861,80 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "please login first"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game not found"
+}
+```
+
+## 9. GET /admin/gameSession/:gameSessionId
+
+Description:
+
+- Gets All Question data from selected game
+
+parameters
+
+- gameSessionId: integer
+
+headers:
+
+```json
+{
+  "authorization": "Bearer <JWT_TOKEN>"
+}
+```
+
+_Response (200 - OK)_
+
+```json
+{
+  "data": {
+    "title": "string",
+    "sessionQuestions": [] | [
+      {
+        "GameSessionId": "number",
+        "QuestionId": "number",
+        "isSolved": "boolean",
+        "SolverPlayerId": "number",
+        "Questions": [
+          {
+            "word": "string",
+            "hint": "string",
+            "coordinates": ["number", "number"],
+            "direction": "straightward" | "downward"
+          }
+        ],
+        "Solver": "null" |  {
+          "username": "string",
+          "solvedAt": "date"
+        }
+      },
+      ...
+    ],
+    "status": "playing | waiting | ended"
+  },
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "please log in"
 }
 ```
 
@@ -905,58 +979,6 @@ _Response (200 - OK)_
 ```json
 {
   "message": "OK"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "please log in"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
-}
-```
-
-_Response (404 - Not Found)_
-
-```json
-{
-  "message": "Game not found"
-}
-```
-
-## 9. GET /admin/gameSession/:gameSessionId
-
-Description:
-
-- Gets All Question data from selected game
-
-parameters
-
-- gameSessionId: integer
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-body:
-
-_Response (200 - OK)_
-
-```json
-{
-  "data": ["questionSessionID1", "questionSessionID2", ...],
 }
 ```
 

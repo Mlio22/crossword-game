@@ -14,9 +14,9 @@ router.post("/games", [mustAdmin], upload.array('gameFiles'), AdminController.cr
 router.put("/games/:id", [mustAdmin], upload.single('gameFile'), AdminController.updateGame);
 router.delete("/games/:id", [mustAdmin], AdminController.deleteGame);
 router.get("/games/:id/open", [mustAdmin], AdminController.openSession);
-router.get("/games/:gameSessionId/", [mustAdmin], AdminController.getSession);
-router.get("/games/:gameSessionId/start", [mustAdmin], AdminController.startSession);
-router.get("/games/:gameSessionId/end", [mustAdmin], AdminController.endSession);
-router.get("/games/:gameSessionId/result", [mustAdmin], AdminController.getResult);
+router.get("/gameSession/:gameSessionId/", [mustAdmin], AdminController.getSession);
+router.get("/gameSession/:gameSessionId/start", [mustAdmin], AdminController.startSession);
+router.get("/gameSession/:gameSessionId/end", [mustAdmin], AdminController.endSession);
+router.get("/gameSession/:gameSessionId/result", [mustAdmin], AdminController.getResult);
 
 module.exports = router;
