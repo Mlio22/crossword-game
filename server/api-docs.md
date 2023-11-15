@@ -81,7 +81,6 @@ List of available endpoints:
 - `GET /gameSession/:gameSessionId/result`
 - `GET /gameSession/:gameSessionId/:sessionQuestionsId`
 - `POST /gameSession/:gameSessionId/:sessionQuestionsId`
-- `GET /logout`
 
 ### Admin
 
@@ -476,7 +475,7 @@ _Response (200 - OK)_
       "score": "number"
     },
     "blue": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     }
   },
@@ -1050,7 +1049,6 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-
 _Response (401 - Unauthorized)_
 
 ```json
@@ -1066,7 +1064,6 @@ _Response (403 - Forbidden)_
   "message": "Game not started or already ended"
 }
 ```
-
 
 _Response (404 - Not Found)_
 
@@ -1098,23 +1095,20 @@ body:
 
 _Response (200 - OK)_
 
-```json
+````json
 {
   "data": {
     "red": {
-      "players": [
-        {
-          "PlayerID": "number",
-          "username": "string",
-          "score": "number"
-        },
-        ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     },
-    "blue": {...}
+    "blue": {
+      "players": ["string", "string", ... ],
+      "score": "number"
+    }
   },
 }
-```
+````
 
 _Response (401 - Unauthorized)_
 
@@ -1129,6 +1123,22 @@ _Response (403 - forbidden)_
 ```json
 {
   "message": "please log in"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not finished yet"
 }
 ```
 

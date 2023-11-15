@@ -305,6 +305,8 @@ module.exports = class AdminController {
       await selectedGameSession.update({
         status: "ended",
       });
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
@@ -312,6 +314,59 @@ module.exports = class AdminController {
 
   static async getResult(req, res, next) {
     try {
+      const { gameSessionId } = req.params;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (selectedGameSession.status === "waiting") {
+        throw { name: "forbidden", message: "Game not started yet" };
+      }
+
+      if (selectedGameSession.status === "playing") {
+        throw { name: "forbidden", message: "Game not finished yet" };
+      }
+
+      const players = await GamePlayer.findAll({
+        where: {
+          GameSessionId: gameSessionId,
+        },
+      });
+
+      let redPlayers = [],
+        bluePlayers = [];
+      let redScore = 0,
+        blueScore = 0;
+
+      players.forEach((player) => {
+        if (player.team === "red") {
+          redPlayers.push(player.username);
+          redScore += player.score;
+        }
+
+        if (player.team === "blue") {
+          bluePlayers.push(player.username);
+          blueScore += player.score;
+        }
+      });
+
+      let data = {
+        red: {
+          players: redPlayers,
+          score: redScore,
+        },
+        blue: {
+          players: bluePlayers,
+          score: blueScore,
+        },
+      };
+
+      return res.status(200).json({ data });
     } catch (error) {
       return next(error);
     }

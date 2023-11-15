@@ -86,10 +86,14 @@ module.exports = class PlayerController {
 
       const selectedGameSession = await GameSession.findOne({
         where: { id: gameSessionId },
-        include: Game
+        include: Game,
       });
 
-      const { status, link, Game: {title} } = selectedGameSession;
+      const {
+        status,
+        link,
+        Game: { title },
+      } = selectedGameSession;
 
       let data = {
         title,
@@ -275,7 +279,7 @@ module.exports = class PlayerController {
         },
       };
 
-      return res.status(200).json({data});
+      return res.status(200).json({ data });
     } catch (error) {
       return next(error);
     }
