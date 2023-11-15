@@ -31,6 +31,17 @@ function findIntersectingIndex(box1, box2) {
   return null;
 }
 
+// todo: transformasikan fungsi diatas menjadi dibawah
+function findIntersectingIndexes(box1, box2) {
+  for (const i of box2) {
+    if (box1.includes(i)) {
+      return i;
+    }
+  }
+
+  return null;
+}
+
 function findClues(selectedQuestion, allQuestions) {
   selectedQuestion = selectedQuestion.Question;
   const selectedBox = getBoxes(selectedQuestion);
@@ -51,4 +62,4 @@ function findClues(selectedQuestion, allQuestions) {
   return revealedIndexes;
 }
 
-module.exports = { findClues };
+module.exports = { findClues, getBoxes, findIntersectingIndex, findIntersectingIndexes };

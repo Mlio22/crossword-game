@@ -1,6 +1,7 @@
 const { hashPass, comparePass } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { Admin, Game } = require("../models");
+const { validateGame, validateGameObject } = require("../helpers/validateGame");
+const { Admin, Game, Question } = require("../models");
 
 module.exports = class AdminController {
   static async login(req, res, next) {
@@ -46,7 +47,7 @@ module.exports = class AdminController {
         order: [["id", "ASC"]],
       });
 
-      res.status(200).json({ data: games });
+      return res.status(200).json({ data: games });
     } catch (error) {
       return next(error);
     }
@@ -54,6 +55,44 @@ module.exports = class AdminController {
 
   static async createGame(req, res, next) {
     try {
+      const { files: gameFiles } = req;
+
+      if (gameFiles.length === 0) {
+        throw { name: "badRequest", message: "please fill the form" };
+      }
+
+      const gameObjects = [];
+
+      for (const file of gameFiles) {
+        if (file.mimetype !== "application/json") {
+          throw { name: "badRequest", message: "invalid file(s)" };
+        }
+
+        const gameString = file.buffer.toString();
+        const gameObject = JSON.parse(gameString);
+
+        try {
+          validateGameObject(gameObject);
+          validateGame(gameObject.questions);
+          gameObjects.push(gameObject);
+        } catch (_) {
+          throw { name: "badRequest", message: "Invalid Game(s)" };
+        }
+      }
+
+      for (const gameObject of gameObjects) {
+        const { title, questions } = gameObject;
+
+        const createdGame = await Game.create({
+          title,
+        });
+
+        for (const question of questions) {
+          await Question.create({ ...question, GameId: createdGame.id });
+        }
+      }
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }

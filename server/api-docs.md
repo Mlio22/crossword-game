@@ -641,8 +641,7 @@ body:
 
 ```json
 {
-  "name": "string (required)",
-  "gameFile": "game file (JSON) (required)"
+  "gameFiles": "game file (JSONs) (required)"
 }
 ```
 
@@ -650,7 +649,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "message": "OK"
+  "message": "Successfully created "number" game(s)"
 }
 ```
 
@@ -659,6 +658,22 @@ _Response (400 - bad request)_
 ```json
 {
   "message": "please fill the form"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid file(s)"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid Game(s)"
 }
 ```
 
