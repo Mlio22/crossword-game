@@ -168,6 +168,54 @@ module.exports = class PlayerController {
 
   static async answerQuestion(req, res, next) {
     try {
+      const { gameSessionId, sessionQuestionId } = req.params;
+      let { answer } = req?.body;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+      });
+
+      if (selectedGameSession.status === "waiting") {
+        throw { name: "forbidden", message: "Game not started yet" };
+      }
+
+      if (!answer) {
+        throw { name: "badRequest", message: "Please fill the answer" };
+      }
+
+      answer = answer.toUpperCase();
+
+      const selectedQuestion = await SessionQuestion.findOne({
+        where: { id: sessionQuestionId, GameSessionId: gameSessionId },
+        include: [
+          {
+            model: GamePlayer,
+            as: "Solver",
+          },
+          Question,
+        ],
+      });
+
+      if (!selectedQuestion) {
+        throw { name: "notFound", message: "Question not found" };
+      }
+
+      if (selectedQuestion.Solver) {
+        return res.status(200).json({ message: "already solved" });
+      }
+
+      if (selectedQuestion.Question.word !== answer) {
+        return res.status(200).json({ message: "wrong" });
+      }
+
+      const { id: gamePlayerId } = req.gamePlayer;
+
+      await selectedQuestion.update({
+        isSolved: true,
+        SolverPlayerId: gamePlayerId,
+      });
+
+      return res.status(200).json({ message: "correct" });
     } catch (error) {
       return next(error);
     }

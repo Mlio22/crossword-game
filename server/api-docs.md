@@ -64,7 +64,7 @@ _SessionQuestions_
 - GameSessionId: number, required
 - QuestionId: number, required
 - isSolved: boolean, default: false
-- solverPlayerId: number, nullable
+- SolverPlayerId: number, nullable
 ```
 
 &nbsp;
@@ -349,6 +349,12 @@ _Response (404 - Not Found)_
 }
 ```
 
+```json
+{
+  "message": "Game not found"
+}
+```
+
 ## 5. POST /gameSession/:gameSessionId/:sessionQuestionId
 
 Description:
@@ -374,7 +380,7 @@ body:
 
 ```json
 {
-  "answer": "string"
+  "answer": "string (required)"
 }
 ```
 
@@ -390,7 +396,7 @@ _Response (400 - bad request)_
 
 ```json
 {
-  "message": "Must fill the answer"
+  "message": "Please fill the answer"
 }
 ```
 
@@ -398,7 +404,17 @@ _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "Not registered"
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
 }
 ```
 
@@ -410,11 +426,25 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
 _Response (404 - Not Found)_
 
 ```json
 {
   "message": "Question not found"
+}
+```
+
+```json
+{
+  "message": "Game not found"
 }
 ```
 

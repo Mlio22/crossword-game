@@ -23,12 +23,13 @@ function mustAuthenticated(req, res, next) {
     const { id } = verifyToken(token);
 
     req.user = { id };
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
+// todo: buat middleware untuk pengecekan gameSession, lalu oper ke req
 async function mustRegistered(req, res, next) {
   try {
     const { gameSessionId } = req?.params;
@@ -58,9 +59,11 @@ async function mustRegistered(req, res, next) {
       throw { name: "unauthorized", message: "Not registered", gameSessionId };
     }
 
-    next();
+    req.gamePlayer = { id: selectedGamePlayer.id };
+
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
@@ -88,9 +91,9 @@ function mustAdmin(req, res, next) {
     if (!id !== "admin") throw { name: "unauthorized", message: "invalid token" };
 
     req.user = { id };
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
