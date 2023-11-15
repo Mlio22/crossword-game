@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-const navigate = useNavigate();
-function handleLogout(event) {
+  const navigate = useNavigate();
+  function handleLogout(event) {
     event.preventDefault();
 
     localStorage.clear();
@@ -44,7 +44,7 @@ function handleLogout(event) {
                 </svg>
               </button>
               <a href="#" className="flex ml-2 md:mr-24">
-                <img src="./logo/dark.png" className="h-8 mr-3" alt="FlowBite Logo" />
+                <img src="./logo/logo.png" className="h-8 mr-3" />
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Crossword App</span>
               </a>
             </div>
@@ -69,9 +69,6 @@ function handleLogout(event) {
                   <div className="px-4 py-3" role="none">
                     <p className="text-sm text-gray-900 dark:text-white" role="none">
                       ADMIN
-                    </p>
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                      {/* {localStorage.email} */}
                     </p>
                   </div>
                   <ul className="py-1" role="none">

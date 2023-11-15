@@ -1,7 +1,14 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/admin/Navbar";
+import Sidebar from "../components/admin/Sidebar";
 
 export default function Dashboard() {
-  return <>
-    <Navbar />
-  </>;
+  return (
+    <>
+      <Navbar />
+      <div className="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-800">
+        <Sidebar />
+
+      </div>
+    </>
+  );
 }
