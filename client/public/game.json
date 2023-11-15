@@ -1,0 +1,29 @@
+{
+  "title": "Test",
+  "questions": [
+    {
+      "word": "HTML",
+      "hint": "Dasar web",
+      "GameId": 1,
+      "startCoordinateX": 1,
+      "startCoordinateY": 1,
+      "direction": "straightward"
+    },
+    {
+      "word": "JSON",
+      "hint": "File transfer data selain XML",
+      "GameId": 1,
+      "startCoordinateX": 8,
+      "startCoordinateY": 2,
+      "direction": "downward"
+    },
+    {
+      "word": "CSS",
+      "GameId": 1,
+      "hint": "Memberi bentuk pada HTML",
+      "startCoordinateX": 7,
+      "startCoordinateY": 3,
+      "direction": "straightward"
+    }
+  ]
+}

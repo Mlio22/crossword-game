@@ -3,7 +3,7 @@ import axios from "axios";
 import SERVER from "../../../constants";
 import Item from "./Item";
 
-export default function List() {
+export default function List({ isUpdated }) {
   const [games, setGames] = useState([]);
 
   async function fetchGames() {
@@ -17,8 +17,8 @@ export default function List() {
   }
 
   useEffect(() => {
-    fetchGames();
-  }, []);
+    if (isUpdated) fetchGames();
+  }, [isUpdated]);
 
   return (
     <>
