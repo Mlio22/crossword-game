@@ -1,4 +1,5 @@
 const { verifyToken } = require("../helpers/jwt");
+const { Player, GamePlayer, GameSession, SessionQuestion, Question } = require("../models");
 
 function mustAuthenticated(req, res, next) {
   try {
@@ -28,6 +29,41 @@ function mustAuthenticated(req, res, next) {
   }
 }
 
+async function mustRegistered(req, res, next) {
+  try {
+    const { gameSessionId } = req?.params;
+    const { id: PlayerId } = req.user;
+
+    if (!gameSessionId) {
+      throw { name: "notFound", message: "Game not found" };
+    }
+
+    const selectedGameSession = await GameSession.findOne({
+      where: { id: gameSessionId },
+    });
+
+    if (!selectedGameSession) {
+      throw { name: "notFound", message: "Game not found" };
+    }
+
+    // checks user already joined
+    const selectedGamePlayer = await GamePlayer.findOne({
+      where: {
+        GameSessionId: gameSessionId,
+        PlayerId,
+      },
+    });
+
+    if (!selectedGamePlayer) {
+      throw { name: "unauthorized", message: "Not registered", gameSessionId };
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
 function mustAdmin(req, res, next) {
   try {
     const authorization = req.headers.authorization;
@@ -48,6 +84,7 @@ function mustAdmin(req, res, next) {
 
     const { id } = verifyToken(token);
 
+    // todo: ganti jadi forbidden
     if (!id !== "admin") throw { name: "unauthorized", message: "invalid token" };
 
     req.user = { id };
@@ -57,4 +94,4 @@ function mustAdmin(req, res, next) {
   }
 }
 
-module.exports = { mustAuthenticated, mustAdmin };
+module.exports = { mustAuthenticated, mustAdmin, mustRegistered };

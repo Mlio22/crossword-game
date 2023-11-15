@@ -83,27 +83,10 @@ module.exports = class PlayerController {
   static async getSessionById(req, res, next) {
     try {
       const { gameSessionId } = req.params;
-      const { id: PlayerId } = req.user;
 
       const selectedGameSession = await GameSession.findOne({
         where: { id: gameSessionId },
       });
-
-      if (!selectedGameSession) {
-        throw { name: "notFound", message: "Game not found" };
-      }
-
-      // checks user already joined
-      const selectedGamePlayer = await GamePlayer.findOne({
-        where: {
-          GameSessionId: gameSessionId,
-          PlayerId,
-        },
-      });
-
-      if (!selectedGamePlayer) {
-        throw { name: "unauthorized", message: "Not registered", gameSessionId };
-      }
 
       const { title, status } = selectedGameSession;
 
@@ -142,15 +125,9 @@ module.exports = class PlayerController {
     try {
       const { gameSessionId, sessionQuestionId } = req.params;
 
-      console.log(gameSessionId, sessionQuestionId);
-
       const selectedGameSession = await GameSession.findOne({
         where: { id: gameSessionId },
       });
-
-      if (!selectedGameSession) {
-        throw { name: "notFound", message: "Game not found" };
-      }
 
       if (selectedGameSession.status === "waiting") {
         throw { name: "forbidden", message: "Game not started yet" };
