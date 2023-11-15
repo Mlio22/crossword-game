@@ -40,6 +40,21 @@ function checkAlreadyAdmin() {
 
 const router = createBrowserRouter([
   {
+    path: "/admin",
+    element: <Dashboard />,
+    loader: checkAdmin,
+  },
+  {
+    path: "/admin/login",
+    element: <Login type={"admin"} />,
+    loader: checkAlreadyAdmin,
+  },
+  {
+    path: "/admin/:id",
+    element: <Game type={"admin"} />,
+    loader: checkAdmin,
+  },
+  {
     path: "/",
     // todo: ada input ID gameSession
     // todo: ada login google juga
@@ -49,23 +64,7 @@ const router = createBrowserRouter([
   {
     path: "/:id",
     element: <Game type={"player"} />,
-    loeder: checkRegistered,
-  },
-  {
-    path: "/admin/",
-    element: <Dashboard />,
-    loeder: checkAdmin,
-  },
-
-  {
-    path: "/admin/login",
-    element: <Login type={"admin"} />,
-    loeder: checkAlreadyAdmin,
-  },
-  {
-    path: "/admin/:id",
-    element: <Game type={"admin"} />,
-    loeder: checkAdmin,
+    loader: checkRegistered,
   },
 ]);
 
