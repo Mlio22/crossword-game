@@ -88,7 +88,7 @@ function mustAdmin(req, res, next) {
     const { id } = verifyToken(token);
 
     // todo: ganti jadi forbidden
-    if (!id !== "admin") throw { name: "unauthorized", message: "invalid token" };
+    if (id !== "admin") throw { name: "unauthorized", message: "invalid token" };
 
     req.user = { id };
     return next();

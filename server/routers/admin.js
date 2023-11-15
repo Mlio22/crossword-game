@@ -4,7 +4,7 @@ const { mustAdmin } = require("../middlewares/authentication");
 
 const router = express.Router();
 
-router.post("/login", [mustAdmin], AdminController.login);
+router.post("/login", AdminController.login);
 router.get("/games", [mustAdmin], AdminController.getGames);
 router.post("/games", [mustAdmin], AdminController.createGame);
 router.put("/games/:id", [mustAdmin], AdminController.updateGame);

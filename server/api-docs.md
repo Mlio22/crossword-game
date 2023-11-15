@@ -533,35 +533,6 @@ _Response (404 - Not Found)_
 }
 ```
 
-## 7. GET /logout
-
-Description:
-
-- Logs player out of their google account
-
-headers:
-
-```json
-{
-  "authorization": "Bearer <JWT_TOKEN>"
-}
-```
-
-_Response (200 - OK)_
-
-```json
-{
-  "message": "logged out succesfully"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```json
-{
-  "message": "Invalid token"
-}
-```
 
 # Admin Routes
 

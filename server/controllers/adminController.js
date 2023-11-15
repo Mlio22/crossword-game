@@ -1,6 +1,6 @@
 const { hashPass, comparePass } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { Admin } = require("../models");
+const { Admin, Game } = require("../models");
 
 module.exports = class AdminController {
   static async login(req, res, next) {
@@ -41,6 +41,12 @@ module.exports = class AdminController {
 
   static async getGames(req, res, next) {
     try {
+      const games = await Game.findAll({
+        attributes: ["id", "title"],
+        order: [["id", "ASC"]],
+      });
+
+      res.status(200).json({ data: games });
     } catch (error) {
       return next(error);
     }
