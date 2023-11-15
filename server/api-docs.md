@@ -1050,6 +1050,7 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+
 _Response (401 - Unauthorized)_
 
 ```json
@@ -1057,6 +1058,15 @@ _Response (401 - Unauthorized)_
   "message": "Invalid token"
 }
 ```
+
+_Response (403 - Forbidden)_
+
+```json
+{
+  "message": "Game not started or already ended"
+}
+```
+
 
 _Response (404 - Not Found)_
 

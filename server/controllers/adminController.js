@@ -287,6 +287,24 @@ module.exports = class AdminController {
 
   static async endSession(req, res, next) {
     try {
+      const { gameSessionId } = req.params;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+        include: Game,
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (selectedGameSession.status !== "playing") {
+        throw { name: "forbidden", message: "Game not started or already ended" };
+      }
+
+      await selectedGameSession.update({
+        status: "ended",
+      });
     } catch (error) {
       return next(error);
     }
