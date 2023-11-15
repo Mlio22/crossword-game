@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      SessionQuestion.belongsTo(models.GameSession);
-      SessionQuestion.belongsTo(models.Question);
-      SessionQuestion.belongsTo(models.GamePlayer, { as: "Solver", foreignKey: "SolverPlayerId" });
+      SessionQuestion.belongsTo(models.GameSession, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+      SessionQuestion.belongsTo(models.Question, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+      SessionQuestion.belongsTo(models.GamePlayer, { as: "Solver", foreignKey: "SolverPlayerId", onDelete: "CASCADE", onUpdate: "CASCADE" });
     }
   }
   SessionQuestion.init(

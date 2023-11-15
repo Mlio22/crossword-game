@@ -16,6 +16,8 @@ module.exports = {
           model: "Players",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       GameSessionId: {
         allowNull: false,
@@ -24,6 +26,8 @@ module.exports = {
           model: "GameSessions",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       username: {
         allowNull: false,

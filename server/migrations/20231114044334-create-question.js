@@ -24,6 +24,8 @@ module.exports = {
           model: "Games",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       startCoordinateX: {
         allowNull: false,

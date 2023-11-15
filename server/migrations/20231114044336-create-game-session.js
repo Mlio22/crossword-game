@@ -16,6 +16,8 @@ module.exports = {
           model: "Games",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       status: {
         allowNull: false,

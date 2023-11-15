@@ -128,6 +128,8 @@ module.exports = class AdminController {
         throw { name: "badRequest", message: "Invalid Game" };
       }
 
+      await selectedGame.update({ title: gameObject.title });
+
       await Question.destroy({
         where: {
           GameId: id,

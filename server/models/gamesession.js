@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      GameSession.belongsTo(models.Game);
-      GameSession.hasMany(models.GamePlayer);
+      GameSession.belongsTo(models.Game, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+      GameSession.hasMany(models.GamePlayer, { onDelete: "CASCADE", onUpdate: "CASCADE" });
     }
   }
   GameSession.init(
