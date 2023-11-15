@@ -1,7 +1,7 @@
 const { findClues } = require("../helpers/clues");
 const { createToken } = require("../helpers/jwt");
 const { randomTeam } = require("../helpers/random");
-const { Player, GamePlayer, GameSession, SessionQuestion, Question } = require("../models");
+const { Player, Game, GamePlayer, GameSession, SessionQuestion, Question } = require("../models");
 
 module.exports = class PlayerController {
   static async login(req, res, next) {
@@ -218,6 +218,62 @@ module.exports = class PlayerController {
       await gamePlayer.increment({ score: 100 });
 
       return res.status(200).json({ message: "correct" });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  static async getResult(req, res, next) {
+    try {
+      const { gameSessionId } = req.params;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+      });
+
+      if (selectedGameSession.status === "waiting") {
+        throw { name: "forbidden", message: "Game not started yet" };
+      }
+
+      if (selectedGameSession.status === "playing") {
+        throw { name: "forbidden", message: "Game not finished yet" };
+      }
+
+      const players = await GamePlayer.findAll({
+        where: {
+          GameSessionId: gameSessionId,
+        },
+      });
+
+      let redPlayers = [],
+        bluePlayers = [];
+      let redScore = 0,
+        blueScore = 0;
+
+      players.forEach((player) => {
+        if (player.team === "red") {
+          redPlayers.push(player.username);
+          redScore += player.score;
+        }
+
+        if (player.team === "blue") {
+          bluePlayers.push(player.username);
+          blueScore += player.score;
+        }
+      });
+
+      let data = {
+        red: {
+          players: redPlayers,
+          score: redScore,
+        },
+        blue: {
+          players: bluePlayers,
+          score: blueScore,
+        },
+      };
+
+      return res.status(200).json({data});
     } catch (error) {
       return next(error);
     }

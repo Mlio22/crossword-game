@@ -456,7 +456,7 @@ Description:
 
 parameters:
 
-- gameId: integer
+- gameSessionId: integer
 
 headers:
 
@@ -472,7 +472,7 @@ _Response (200 - OK)_
 {
   "data": {
     "red": {
-      "players": ["playerObject1", "playerObject2", ... ],
+      "players": ["string", "string", ... ],
       "score": "number"
     },
     "blue": {
@@ -488,6 +488,40 @@ _Response (401 - Unauthorized)_
 ```json
 {
   "message": "Invalid token"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Please log in",
+  "gameSessionId": "number"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Not registered",
+  "gameSessionId": "number"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not started yet"
+}
+```
+
+_Response (403 - forbidden)_
+
+```json
+{
+  "message": "Game not finished yet"
 }
 ```
 
