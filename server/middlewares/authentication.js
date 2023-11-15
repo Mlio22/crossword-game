@@ -59,7 +59,7 @@ async function mustRegistered(req, res, next) {
       throw { name: "unauthorized", message: "Not registered", gameSessionId };
     }
 
-    req.gamePlayer = { id: selectedGamePlayer.id };
+    req.gamePlayer = selectedGamePlayer;
 
     return next();
   } catch (error) {

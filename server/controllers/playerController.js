@@ -208,12 +208,14 @@ module.exports = class PlayerController {
         return res.status(200).json({ message: "wrong" });
       }
 
-      const { id: gamePlayerId } = req.gamePlayer;
+      const gamePlayer = req.gamePlayer;
 
       await selectedQuestion.update({
         isSolved: true,
-        SolverPlayerId: gamePlayerId,
+        SolverPlayerId: gamePlayer.id,
       });
+
+      await gamePlayer.increment({ score: 100 });
 
       return res.status(200).json({ message: "correct" });
     } catch (error) {
