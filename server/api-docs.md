@@ -998,6 +998,14 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (403 - Forbidden)_
+
+```json
+{
+  "message": "Game Already Started / Ended"
+}
+```
+
 _Response (404 - Not Found)_
 
 ```json

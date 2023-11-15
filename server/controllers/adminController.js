@@ -260,6 +260,26 @@ module.exports = class AdminController {
 
   static async startSession(req, res, next) {
     try {
+      const { gameSessionId } = req.params;
+
+      const selectedGameSession = await GameSession.findOne({
+        where: { id: gameSessionId },
+        include: Game,
+      });
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (selectedGameSession.status !== "waiting") {
+        throw { name: "forbidden", message: "Game Already Started / Ended" };
+      }
+
+      await selectedGameSession.update({
+        status: "playing",
+      });
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
