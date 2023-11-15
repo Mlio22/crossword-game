@@ -5,8 +5,8 @@ import Form from "../Form";
 
 export default function Games() {
   const [notification, setNotification] = useState({
-    status: "",
-    message: "",
+    status: "asmdlksakldm",
+    text: "askmdlaksdlkm",
   });
 
   const [openAdd, setOpenAdd] = useState(false);
@@ -28,10 +28,7 @@ export default function Games() {
   };
 
   const closeDrawer = (message) => {
-    if (message?.type === "success") {
-    setIsUpdated(true);
-    }
-
+    if (message?.type === "success") setIsUpdated(true);
     if (message) setNotification(message);
 
     setOpenAdd(false);

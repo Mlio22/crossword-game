@@ -1,4 +1,5 @@
 import Button from "../Button";
+import Toast from "../Toast";
 
 export default function Header({ notification, openDrawer }) {
   return (
@@ -12,7 +13,7 @@ export default function Header({ notification, openDrawer }) {
             <Button openDrawer={() => openDrawer("add")} name={"addButton"} text={"Add Game (s)"} />
           </div>
         </div>
-        {notification.message}
+        {notification && <Toast name={notification.type} text={notification.text} />}
       </div>
     </>
   );
