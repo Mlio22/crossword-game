@@ -100,6 +100,44 @@ module.exports = class AdminController {
 
   static async updateGame(req, res, next) {
     try {
+      const { id } = req.params;
+      const { file } = req;
+
+      if (!file) {
+        throw { name: "badRequest", message: "please fill the form" };
+      }
+
+      const selectedGame = await Game.findByPk(id, {});
+
+      if (!selectedGame) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      if (file.mimetype !== "application/json") {
+        throw { name: "badRequest", message: "invalid file" };
+      }
+
+      const gameString = file.buffer.toString();
+      const gameObject = JSON.parse(gameString);
+
+      try {
+        validateGameObject(gameObject);
+        validateGame(gameObject.questions);
+      } catch (_) {
+        throw { name: "badRequest", message: "Invalid Game" };
+      }
+
+      await Question.destroy({
+        where: {
+          GameId: id,
+        },
+      });
+
+      for (const question of gameObject.questions) {
+        await Question.create({ ...question, GameId: id });
+      }
+
+      res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }

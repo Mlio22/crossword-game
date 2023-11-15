@@ -533,7 +533,6 @@ _Response (404 - Not Found)_
 }
 ```
 
-
 # Admin Routes
 
 ## 1. POST /admin/login (done)
@@ -715,8 +714,7 @@ body:
 
 ```json
 {
-  "name": "string (optional)",
-  "gameFile": "game file (JSON) (optional)"
+  "gameFile": "game file (JSON) (required)"
 }
 ```
 
@@ -728,11 +726,35 @@ _Response (200 - OK)_
 }
 ```
 
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "please fill the form"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid file"
+}
+```
+
+_Response (400 - bad request)_
+
+```json
+{
+  "message": "Invalid Game"
+}
+```
+
 _Response (401 - Unauthorized)_
 
 ```json
 {
-  "message": "please"
+  "message": "please log in"
 }
 ```
 

@@ -23,6 +23,9 @@ function errorHandler(err, req, res, next) {
     case "badRequest":
       return res.status(400).json(err);
 
+    case "MulterError":
+      return res.status(400).json({ message: "invalid file" });
+
     default:
       console.log(err);
       return res.status(500).json({ message: "Internal Server Error" });
