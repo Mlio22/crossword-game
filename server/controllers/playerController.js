@@ -56,7 +56,22 @@ module.exports = class PlayerController {
         throw { name: "notFound", message: "Game not found" };
       }
 
-      // todo: check session is waiting
+      // check player already logged in or not
+      console.log(selectedGameSession.status);
+      if (selectedGameSession.status !== "waiting") {
+        const { id: PlayerId } = req.user;
+
+        const selectedGamePlayer = await GamePlayer.findOne({
+          where: {
+            PlayerId,
+            GameSessionId: gameSessionId,
+          },
+        });
+
+        if (!selectedGamePlayer) {
+          throw { name: "notFound", message: "Game already started / ended" };
+        }
+      }
 
       return res.status(200).json({ message: "OK" });
     } catch (error) {

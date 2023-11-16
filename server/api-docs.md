@@ -125,6 +125,14 @@ _Response (404 - Not Found)_
 
 ```json
 {
+  "message": "Game already started / ended"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
   "message": "Game not found"
 }
 ```

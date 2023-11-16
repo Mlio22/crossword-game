@@ -21,6 +21,7 @@ export default function GameSessionInput({ handler }) {
           className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 mr-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           placeholder="Game Session ID"
           required
+          autoFocus
           onChange={handleChange}
         />
         <button type="submit" className="w-20 bg-gray-500 hover:bg-gray-600 rounded-lg text-gray-200">

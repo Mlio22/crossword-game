@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import GoogleLogin from "../../components/player/GoogleLogin";
 import GameSessionInput from "../../components/player/GameSessionInput";
+import GameSignup from "../../components/player/GameSignup";
 import { Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import SERVER from "../../constants";
-import GameSignup from "../../components/player/GameSignup";
 import { useNavigate } from "react-router-dom";
 
 export default function PlayerLogin() {
@@ -59,8 +59,15 @@ export default function PlayerLogin() {
         setIsChanging(!isChanging);
         setMessage("");
       } catch (error) {
-        if (error?.response?.status === 404) {
-          setMessage("Session not found");
+        const {
+          status,
+          data: { message },
+        } = error?.response;
+
+        console.log(error);
+
+        if (status === 404) {
+          setMessage(message);
         } else {
           setMessage("Error just happened");
         }
