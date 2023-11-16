@@ -165,7 +165,7 @@ export default function UpdateForm({ open, closeDrawer, data }) {
           </form>
 
           <p className="mt-2 text-center">
-            <a href="./game.json" download class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">
+            <a href="./game.json" download className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">
               game format example
             </a>
           </p>

@@ -891,9 +891,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": {
-    "id": "number"
-  }
+  "id": "number"
 }
 ```
 
