@@ -8,7 +8,7 @@ async function createQRCode(link) {
     qr_code_text: link,
     image_format: "SVG",
     background_color: "#ffffff",
-    foreground_color: "#fa6e79",
+    foreground_color: "#000000",
     marker_right_inner_color: "#2d7cda",
     marker_right_outer_color: "#00bfff",
     image_width: 720,

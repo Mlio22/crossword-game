@@ -4,7 +4,7 @@ const { createGameSessionLink } = require("../helpers/bitly");
 const { createToken } = require("../helpers/jwt");
 const { createQRCode } = require("../helpers/qrcode");
 const { validateGame, validateGameObject } = require("../helpers/validateGame");
-const { Admin, Game, Question, GameSession, SessionQuestion, GamePlayer, sequelize } = require("../models");
+const { Admin, Game, Question, GameSession, SessionQuestion, GamePlayer } = require("../models");
 const axios = require("axios");
 
 module.exports = class AdminController {
@@ -184,31 +184,35 @@ module.exports = class AdminController {
         throw { name: "notFound", message: "Game not found" };
       }
 
-      const openSessionTransaction = await sequelize.transaction();
+      const createdSession = await GameSession.create({
+        GameId: id,
+        link: "test",
+      });
 
-      try {
-        const createdSession = await GameSession.create(
-          {
-            GameId: id,
-            link: "test",
-          },
-          { transaction: openSessionTransaction }
-        );
+      const questions = await Question.findAll({
+        where: {
+          GameId: id,
+        },
+      });
 
-        const link = await createGameSessionLink(createdSession.id);
+      for (const question of questions) {
+        const { id } = question;
 
-        await createdSession.update({ link }, { transaction: openSessionTransaction });
-        await openSessionTransaction.commit();
-
-        return res.status(200).json({
-          id: createdSession.id,
+        await SessionQuestion.create({
+          GameSessionId: createdSession.id,
+          QuestionId: id,
         });
-      } catch (error) {
-        // todo: gunakan link biasa
-        await openSessionTransaction.rollback();
-        next(error);
       }
+
+      const link = await createGameSessionLink(createdSession.id);
+
+      await createdSession.update({ link });
+
+      return res.status(200).json({
+        id: createdSession.id,
+      });
     } catch (error) {
+      console.log(error);
       return next(error);
     }
   }

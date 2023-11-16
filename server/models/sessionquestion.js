@@ -55,15 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       SolverPlayerId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Solver Player ID should not empty",
-          },
-          notNull: {
-            msg: "Solver Player ID should not null",
-          },
-        },
+        allowNull: true,
       },
     },
     {
