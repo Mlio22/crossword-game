@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SERVER from "../../constants";
 import Game from "../../components/Game";
+import socket from "../../socket";
 
 export default function AdminGame() {
   const { id: gameSessionId } = useParams();
@@ -33,6 +34,9 @@ export default function AdminGame() {
   }
 
   useEffect(() => {
+    socket.on("refresh", () => {
+      fetchCurrentGameSession();
+    });
     fetchCurrentGameSession();
   }, []);
 

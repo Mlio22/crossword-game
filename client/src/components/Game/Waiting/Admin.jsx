@@ -2,10 +2,10 @@ import axios from "axios";
 import QRCode from "../QRCode";
 import SERVER from "../../../constants";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Admin({ gameData, refresh }) {
-  const { link, qrcode } = gameData;
-
+  const { link, qrcode, players } = gameData;
   const { id } = useParams();
 
   async function handleClick() {
@@ -46,11 +46,9 @@ export default function Admin({ gameData, refresh }) {
         <div className="blueTeam mt-2 h-60 overflow-auto">
           <p>Blue Team</p>
           <ul>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
+            {players.blue.map((player, idx) => (
+              <li key={idx}>{player}</li>
+            ))}
           </ul>
         </div>
         <hr class="w-54 h-0.5 mx-auto bg-gray-100 border-0 rounded dark:bg-gray-700"></hr>
@@ -58,11 +56,9 @@ export default function Admin({ gameData, refresh }) {
         <div className="redTeam h-60 mt-2 overflow-auto">
           <p>Red Team</p>
           <ul>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
-            <li>ABC</li>
+            {players.red.map((player, idx) => (
+              <li key={idx}>{player}</li>
+            ))}
           </ul>
         </div>
       </div>

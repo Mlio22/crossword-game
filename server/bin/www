@@ -1,6 +1,27 @@
 const app = require("../app");
 
-const port = 3000;
-app.listen(3000, () => {
-  console.log(`crossword-game app listening on http://localhost:${port}`);
+const socketIo = require("socket.io");
+const http = require("http");
+const CLIENT = require("../constants");
+const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
+
+const io = socketIo(server, {
+  cors: {
+    origin: CLIENT,
+  },
+}); //in case server and client run on different urls
+io.on("connection", (socket) => {
+  console.log("client connected: ", socket.id);
+
+  socket.on("disconnect", (reason) => {
+    console.log(reason);
+  });
+});
+
+app.io = io
+
+server.listen(PORT, (err) => {
+  if (err) console.log(err);
+  console.log("Server running on Port ", PORT);
 });

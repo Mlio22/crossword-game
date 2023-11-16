@@ -28,7 +28,7 @@ module.exports = class PlayerController {
       const [selectedPlayer, createdPlayer] = await Player.findOrCreate({
         where: { googleProfileID: googleUserId },
         defaults: {
-          googleUserId,
+          googleProfileID: googleUserId,
         },
       });
 
@@ -133,6 +133,7 @@ module.exports = class PlayerController {
         team: randomTeam(),
       });
 
+      req.app.io.emit('refresh')
       return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);

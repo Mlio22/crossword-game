@@ -231,6 +231,7 @@ module.exports = class AdminController {
       }
 
       const {
+        id,
         status,
         link,
         Game: { title },
@@ -238,12 +239,32 @@ module.exports = class AdminController {
 
       const qrcode = await createQRCode(link);
 
+      const players = await GamePlayer.findAll({
+        where: {
+          GameSessionId: id,
+        },
+      });
+
+      let redPlayers = [],
+        bluePlayers = [];
+
+      players.forEach((player) => {
+        if (player.team === "red") {
+          redPlayers.push(player.username);
+        }
+
+        if (player.team === "blue") {
+          bluePlayers.push(player.username);
+        }
+      });
+
       let data = {
         title,
         link,
         qrcode,
         sessionQuestions: [],
         status,
+        players: { red: redPlayers, blue: bluePlayers },
       };
 
       if (status !== "waiting") {
@@ -381,6 +402,7 @@ module.exports = class AdminController {
 
       return res.status(200).json({ data });
     } catch (error) {
+      // next(error);
       return next(error);
     }
   }

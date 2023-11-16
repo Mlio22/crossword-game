@@ -123,7 +123,7 @@ export default function PlayerLogin() {
 
     // todo: cek registrasi
     try {
-      const { data } = await axios.get(`${SERVER}/gameSession/${game_session_id}`, {
+      await axios.get(`${SERVER}/gameSession/${game_session_id}`, {
         headers: {
           Authorization: "Bearer " + player_token,
         },
@@ -132,6 +132,7 @@ export default function PlayerLogin() {
       // redirect ke game
       navigate(`/${game_session_id}`);
     } catch (error) {
+      console.log(error);
       if (error?.response?.data?.message === "Not registered") {
         return setContent(<GameSignup handler={signupHandler} />);
       }
