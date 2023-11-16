@@ -9,16 +9,14 @@ export default function PlayerGame() {
 
   async function checkRegistered() {
     try {
-      const { data } = await axios.get(`${SERVER}/gameSession/${gameSessionId}`, {
+      await axios.get(`${SERVER}/gameSession/${gameSessionId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.player_token,
         },
       });
-
-      console.log(data);
     } catch (error) {
       if (error?.response?.status === 401) {
-        localStorage.game_session_id = gameSessionId
+        localStorage.game_session_id = gameSessionId;
         return navigate("/");
       }
     }

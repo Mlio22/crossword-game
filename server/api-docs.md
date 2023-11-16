@@ -943,6 +943,8 @@ _Response (200 - OK)_
 {
   "data": {
     "title": "string",
+    "link": "string",
+    "qrcode": "image/xml",
     "sessionQuestions": [] | [
       {
         "GameSessionId": "number",

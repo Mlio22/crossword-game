@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 export default function PlayerLogin() {
   const navigate = useNavigate();
 
-  const [playerInformation, setPlayerInformation] = useState({});
   const [content, setContent] = useState(<></>);
 
   const [message, setMessage] = useState("");

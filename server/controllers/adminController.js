@@ -1,8 +1,11 @@
+const CLIENT = require("../constants");
 const { hashPass, comparePass } = require("../helpers/bcrypt");
 const { createGameSessionLink } = require("../helpers/bitly");
 const { createToken } = require("../helpers/jwt");
+const { createQRCode } = require("../helpers/qrcode");
 const { validateGame, validateGameObject } = require("../helpers/validateGame");
 const { Admin, Game, Question, GameSession, SessionQuestion, GamePlayer, sequelize } = require("../models");
+const axios = require("axios");
 
 module.exports = class AdminController {
   static async login(req, res, next) {
@@ -201,6 +204,7 @@ module.exports = class AdminController {
           id: createdSession.id,
         });
       } catch (error) {
+        // todo: gunakan link biasa
         await openSessionTransaction.rollback();
         next(error);
       }
@@ -228,9 +232,12 @@ module.exports = class AdminController {
         Game: { title },
       } = selectedGameSession;
 
+      const qrcode = await createQRCode(link);
+
       let data = {
         title,
         link,
+        qrcode,
         sessionQuestions: [],
         status,
       };
