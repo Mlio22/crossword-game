@@ -1,10 +1,10 @@
 # Lodging API Documentation
 
-GCP IP:
+GCP IP: 34.142.157.9
 
 DOMAIN:
 
-Test using Postman (import):
+Test using Postman (import):https://api.postman.com/collections/11206461-6af3078c-16da-42b4-9aac-6b994c480079?access_key=PMAT-01HFD5AD17P1FRJFKPW81YS6T7
 
 &nbsp;
 
