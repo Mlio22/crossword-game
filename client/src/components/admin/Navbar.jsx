@@ -44,7 +44,7 @@ export default function Navbar() {
                 </svg>
               </button>
               <a href="#" className="flex ml-2 md:mr-24">
-                <img src="./logo/logo.png" className="h-8 mr-3" />
+                <img src="/logo/logo.png" className="h-8 mr-3" />
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Crossword App</span>
               </a>
             </div>
