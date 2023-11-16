@@ -7,23 +7,6 @@ import Login from "./pages/Login";
 import Game from "./pages/Game";
 import Dashboard from "./pages/Dashboard";
 
-function checkRegistered() {
-  if (!localStorage.game_token) {
-    return redirect("/");
-  }
-
-  return null;
-}
-
-function checkAlreadyRegistered() {
-  if (localStorage.game_token) {
-    const { gameSessionId } = localStorage;
-
-    return redirect(`/${gameSessionId}`);
-  }
-  return null;
-}
-
 function checkAdmin() {
   if (!localStorage.admin_token) {
     return redirect("/admin/login");
@@ -59,12 +42,10 @@ const router = createBrowserRouter([
     // todo: ada input ID gameSession
     // todo: ada login google juga
     element: <Login type={"player"} />,
-    loader: checkAlreadyRegistered,
   },
   {
     path: "/:id",
     element: <Game type={"player"} />,
-    loader: checkRegistered,
   },
 ]);
 

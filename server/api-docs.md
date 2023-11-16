@@ -103,6 +103,32 @@ List of available endpoints:
 
 # Player Routes
 
+## 0. GET /checkSession/:gameSessionId
+
+Description:
+
+- Checks if selected session is available
+
+parameters:
+
+- gameSessionId: integer
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "OK"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game not found"
+}
+```
+
 ## 1. POST /login
 
 Description:
@@ -113,7 +139,7 @@ Description:
 
 ```json
 {
-  "googleProfileID": "string (required)"
+  "google_token": "string (required)"
 }
 ```
 
@@ -158,6 +184,14 @@ _Response (400 - Bad Request)_
 }
 ```
 
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Duplicate name"
+}
+```
+
 _Response (401 - Unauthorized)_
 
 ```json
@@ -166,11 +200,11 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-_Response (400 - Bad Request)_
+_Response (403 - Forbidden)_
 
 ```json
 {
-  "message": "Duplicate name"
+  "message": "Already registered"
 }
 ```
 
@@ -1095,7 +1129,7 @@ body:
 
 _Response (200 - OK)_
 
-````json
+```json
 {
   "data": {
     "red": {
@@ -1108,7 +1142,7 @@ _Response (200 - OK)_
     }
   },
 }
-````
+```
 
 _Response (401 - Unauthorized)_
 
