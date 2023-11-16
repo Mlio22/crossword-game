@@ -124,7 +124,7 @@ export default function Admin({ gameData }) {
 
                   if (solved)
                     return (
-                      <li className="stroke-slate-200" key={idx}>
+                      <li className="line-through" key={idx}>
                         {hintText}
                       </li>
                     );
@@ -141,11 +141,9 @@ export default function Admin({ gameData }) {
                 {downwardHints.map((hint, idx) => {
                   const [hintText, solved] = hint;
 
-                  console.log(solved);
-
                   if (solved) {
                     return (
-                      <li className="stroke-slate-200" key={idx}>
+                      <li className="line-through" key={idx}>
                         {hintText}
                       </li>
                     );

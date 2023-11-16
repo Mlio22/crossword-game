@@ -384,4 +384,6 @@ module.exports = class AdminController {
       return next(error);
     }
   }
+
+  // todo: buat getQrcode
 };
