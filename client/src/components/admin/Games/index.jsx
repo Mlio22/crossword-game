@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Header from "./Header";
 import List from "./List";
 import Form from "../Form";
+import DrawerContext from "../../../contexts/Drawer";
 
 export default function Games() {
   const [notification, setNotification] = useState({
@@ -16,7 +17,6 @@ export default function Games() {
 
   const [currentData, setCurrentData] = useState({});
 
-  // todo: gunakan context
   const openDrawer = (name, data) => {
     if (data) setCurrentData(data);
 
@@ -40,11 +40,13 @@ export default function Games() {
     <>
       <div id="main-content" className="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
-          <Header notification={notification} openDrawer={openDrawer} />
-          <List isUpdated={isUpdated} openDrawer={openDrawer} />
-          <Form open={openAdd} closeDrawer={closeDrawer} name={"add"} />
-          <Form open={openUpdate} data={currentData} closeDrawer={closeDrawer} name={"update"} />
-          <Form open={openDelete} data={currentData} closeDrawer={closeDrawer} name={"delete"} />
+          <DrawerContext.Provider value={{ openAdd, openUpdate, openDelete, openDrawer, closeDrawer }}>
+            <Header notification={notification} />
+            <List isUpdated={isUpdated} />
+            <Form name={"add"} />
+            <Form data={currentData} name={"update"} />
+            <Form data={currentData} name={"delete"} />
+          </DrawerContext.Provider>
         </main>
       </div>
     </>

@@ -1,9 +1,18 @@
-export default function UpdateButton({ text, openDrawer }) {
+import { useContext } from "react";
+import DrawerContext from "../../../contexts/Drawer";
+
+export default function UpdateButton({ text, game }) {
+  const { openDrawer } = useContext(DrawerContext);
+
+  function clickHandlder() {
+    openDrawer("update", game);
+  }
+
   return (
     <>
       <button
         type="button"
-        onClick={openDrawer}
+        onClick={clickHandlder}
         className="inline-flex items-center px-5 py-2.5  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
       >
         {/* todo: ganti ke fa6 */}

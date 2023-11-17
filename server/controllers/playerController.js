@@ -15,8 +15,6 @@ module.exports = class PlayerController {
         throw { name: "badRequest", message: "Please login using google" };
       }
 
-      console.log(google_token);
-
       const client = new OAuth2Client();
       const ticket = await client.verifyIdToken({
         idToken: google_token,

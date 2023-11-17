@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 
 // todo: tertimpa  kosong
 function Box({ data }) {
-  const [letter, id, isFirst, initialRevealed] = data;
+  const [letter, id, isFirst, initialRevealed, word, hint] = data;
   const { id: gameSessionId } = useParams();
 
   const filled = letter ? "border bg-white hover:bg-gray-100" : "";
 
   async function handleClick() {
-    const answer = prompt("Jawaban anda adalah....");
+    const answer = prompt(`${hint} (${word.length} huruf)`);
 
     if (answer) {
       try {
@@ -53,10 +53,10 @@ function Box({ data }) {
 
 function generateBoxes(questions) {
   // https://stackoverflow.com/a/38213067/12125511
-  let letters = [...Array(12)].map((_) => [...Array(12)].map((_) => Array(4)));
+  let letters = [...Array(12)].map((_) => [...Array(12)].map((_) => Array(5)));
 
   for (const { Question, SolverPlayerId, SessionQuestionId: id } of questions) {
-    const { word, startCoordinateX, startCoordinateY, direction } = Question;
+    const { word, startCoordinateX, startCoordinateY, direction, hint } = Question;
 
     let x = startCoordinateX - 1;
     let y = startCoordinateY - 1;
@@ -65,7 +65,7 @@ function generateBoxes(questions) {
       const letter = word[i];
 
       // todo: bug dimana 2 soal yang mengambil posisi yang sama
-      letters[y][x] = [letter, id, !i, SolverPlayerId];
+      letters[y][x] = [letter, id, !i, SolverPlayerId, word, hint];
 
       if (direction === "straightward") x += 1;
       if (direction === "downward") y += 1;

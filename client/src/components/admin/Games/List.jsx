@@ -3,7 +3,7 @@ import axios from "axios";
 import SERVER from "../../../constants";
 import Item from "./Item";
 
-export default function List({ isUpdated, openDrawer }) {
+export default function List({ isUpdated }) {
   const [games, setGames] = useState([]);
 
   async function fetchGames() {
@@ -39,7 +39,7 @@ export default function List({ isUpdated, openDrawer }) {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                   {games.map((game) => {
-                    return <Item openDrawer={openDrawer} key={game.id} game={game} />;
+                    return <Item key={game.id} game={game} />;
                   })}
                 </tbody>
               </table>

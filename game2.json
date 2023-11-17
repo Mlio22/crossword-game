@@ -1,0 +1,53 @@
+{
+  "title": "Absurd",
+  "questions": [
+    {
+      "word": "BWANG",
+      "hint": "Rizki: ____ Bang",
+      "GameId": 1,
+      "startCoordinateX": 1,
+      "startCoordinateY": 1,
+      "direction": "straightward"
+    },
+    {
+      "word": "GANTENG",
+      "hint": "____ dan berani",
+      "GameId": 1,
+      "startCoordinateX": 5,
+      "startCoordinateY": 1,
+      "direction": "downward"
+    },
+    {
+      "word": "PANTAI",
+      "GameId": 1,
+      "hint": "sebuah tempat wisata",
+      "startCoordinateX": 3,
+      "startCoordinateY": 3,
+      "direction": "straightward"
+    },
+    {
+      "word": "GOKIL",
+      "GameId": 1,
+      "hint": "Gondrong & dekil",
+      "startCoordinateX": 5,
+      "startCoordinateY": 7,
+      "direction": "straightward"
+    },
+    {
+      "word": "LAMA",
+      "GameId": 1,
+      "hint": "Semua hal tidak sebentar",
+      "startCoordinateX": 9,
+      "startCoordinateY": 7,
+      "direction": "downward"
+    },
+    {
+      "word": "BACOT",
+      "GameId": 1,
+      "hint": "Sebuah kata kasar",
+      "startCoordinateX": 8,
+      "startCoordinateY": 10,
+      "direction": "straightward"
+    }
+  ]
+}

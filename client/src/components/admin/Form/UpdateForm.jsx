@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Drawer, Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import SERVER from "../../../constants";
+import DrawerContext from "../../../contexts/Drawer";
 
-export default function UpdateForm({ open, closeDrawer, data }) {
+export default function UpdateForm({ data }) {
   const [gameFile, setGameFile] = useState({});
   const [isWorking, setIsWorking] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const { closeDrawer, openUpdate } = useContext(DrawerContext);
 
   let inputtedElement;
   if (gameFile?.name) {
@@ -89,7 +92,7 @@ export default function UpdateForm({ open, closeDrawer, data }) {
       <Drawer
         placement="right"
         overlay={false}
-        open={open}
+        open={openUpdate}
         onClose={handleClose}
         className="fixed top-0 right-0 z-40 w-full h-screen max-w-xs overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800 "
       >

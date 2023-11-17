@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Drawer, Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import SERVER from "../../../constants";
+import DrawerContext from "../../../contexts/Drawer";
 
-export default function DeleteForm({ open, closeDrawer, data }) {
+export default function DeleteForm({ data }) {
   const [isWorking, setIsWorking] = useState(false);
+
+  const { openDelete, closeDrawer } = useContext(DrawerContext);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -44,7 +47,7 @@ export default function DeleteForm({ open, closeDrawer, data }) {
       <Drawer
         placement="right"
         overlay={false}
-        open={open}
+        open={openDelete}
         onClose={closeDrawer}
         className="fixed top-0 right-0 z-40 w-full h-screen max-w-xs overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800 "
       >
