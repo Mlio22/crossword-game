@@ -1,12 +1,24 @@
-import { useContext } from "react";
 import { IoGameController } from "react-icons/io5";
-import DrawerContext from "../../../contexts/Drawer";
+import axios from "axios";
+import SERVER from "../../../constants";
+import { useNavigate } from "react-router-dom";
 
 export default function OpenButton({ text, game }) {
-  const { openDrawer } = useContext(DrawerContext);
+  const navigate = useNavigate();
 
-  function clickHandlder() {
-    openDrawer();
+  async function clickHandlder() {
+    try {
+      const { data } = await axios.get(`${SERVER}/admin/games/${game.id}/open`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.admin_token,
+        },
+      });
+
+      const openedGameSessionId = data.id;
+      return navigate(`/admin/${openedGameSessionId}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
