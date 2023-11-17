@@ -313,6 +313,8 @@ module.exports = class AdminController {
         status: "playing",
       });
 
+      req.app.io.emit("refresh");
+
       return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
@@ -340,6 +342,7 @@ module.exports = class AdminController {
         status: "ended",
       });
 
+      req.app.io.emit("refresh");
       return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);

@@ -11,6 +11,7 @@ export default function AdminGame() {
   const [gameData, setGameData] = useState({
     title: "",
     sessionQuestions: [],
+    qrcode: null,
     link: "",
     status: "",
   });

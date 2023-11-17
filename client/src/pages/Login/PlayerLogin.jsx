@@ -96,6 +96,7 @@ export default function PlayerLogin() {
         );
 
         setMessage("");
+        return navigate(`/${localStorage.game_session_id}`)
       } catch (error) {
         const message = error?.response?.data?.message;
 

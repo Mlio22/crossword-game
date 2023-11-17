@@ -2,7 +2,6 @@ import axios from "axios";
 import QRCode from "../QRCode";
 import SERVER from "../../../constants";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 export default function Admin({ gameData, refresh }) {
   const { link, qrcode, players } = gameData;

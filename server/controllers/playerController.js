@@ -12,8 +12,10 @@ module.exports = class PlayerController {
       const { google_token } = req.body;
 
       if (!google_token) {
-        throw { name: "badRequest", message: "Please login" };
+        throw { name: "badRequest", message: "Please login using google" };
       }
+
+      console.log(google_token);
 
       const client = new OAuth2Client();
       const ticket = await client.verifyIdToken({
@@ -108,6 +110,7 @@ module.exports = class PlayerController {
       const signedPlayer = await GamePlayer.findOne({
         where: {
           PlayerId,
+          GameSessionId: gameSessionId
         },
       });
 
@@ -283,6 +286,7 @@ module.exports = class PlayerController {
 
       await gamePlayer.increment({ score: 100 });
 
+      req.app.io.emit('refresh')
       return res.status(200).json({ message: "correct" });
     } catch (error) {
       return next(error);

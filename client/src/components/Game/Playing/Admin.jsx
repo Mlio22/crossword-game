@@ -1,9 +1,12 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import SERVER from "../../../constants";
+import { useParams } from "react-router-dom";
 
 function Box({ data }) {
   const [letter, id, isFirst, initialRevealed] = data;
 
-  const filled = letter ? "border bg-white" : "";
+  const filled = letter ? "border bg-white hover:bg-gray-100" : "";
 
   function handleClick() {
     console.log(id);
@@ -33,8 +36,8 @@ function generateBoxes(questions) {
   // https://stackoverflow.com/a/38213067/12125511
   let letters = [...Array(12)].map((_) => [...Array(12)].map((_) => Array(4)));
 
-  for (const { Question, SolverPlayerId } of questions) {
-    const { id, word, startCoordinateX, startCoordinateY, direction } = Question;
+  for (const { Question, SolverPlayerId, SessionQuestionId: id } of questions) {
+    const { word, startCoordinateX, startCoordinateY, direction } = Question;
 
     let x = startCoordinateX - 1;
     let y = startCoordinateY - 1;
@@ -79,39 +82,49 @@ function generateBoxes(questions) {
 
 export default function Admin({ gameData }) {
   let { sessionQuestions: questions } = gameData;
-  questions = questions.map((question) => {
-    const { Question, SolverPlayerId } = question;
+  const { id } = useParams();
 
-    question = { Question, SolverPlayerId };
+  questions = questions.map((question) => {
+    const { Question, SolverPlayerId, id } = question;
+
+    question = { Question, SolverPlayerId, SessionQuestionId: id };
     return question;
   });
 
   let straightwardHints = [];
   let downwardHints = [];
 
-  questions.forEach(({ Question, SolverPlayerId }) => {
-    const { id, hint, direction } = Question;
+  questions.forEach(({ Question, SolverPlayerId, SessionQuestionId: id }) => {
+    const { hint, direction } = Question;
 
     if (direction === "straightward") straightwardHints.push([`${id}. ${hint}`, SolverPlayerId]);
     if (direction === "downward") downwardHints.push([`${id}. ${hint}`, SolverPlayerId]);
   });
 
-  const [boxes, setBoxes] = useState({
-    gameBoxes: [],
-    element: <></>,
-  });
+  const generatedBoxes = generateBoxes(questions);
 
-  useEffect(() => {
-    const generatedBoxes = generateBoxes(questions);
-    setBoxes(generatedBoxes);
-  }, []);
+  async function handleClick() {
+    const confirm = window.confirm("Selesaikan game?");
+
+    if (confirm) {
+      try {
+        await axios.get(`${SERVER}/admin/gameSession/${id}/end`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.admin_token,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   return (
     <>
       <div className="w-screen p-4 h-screen  ">
         <div className="flex">
           <div id="game" className="w-4/12 max-h-1/2  m-auto">
-            {boxes.element}
+            {generatedBoxes.element}
           </div>
           <div id="cluesContainer" className="w-4/12 border p-4">
             <p className="text-center text-lg font-bold">Clues</p>
@@ -156,7 +169,7 @@ export default function Admin({ gameData }) {
           </div>
         </div>
         <div className="startButton w-32 max-h-1/2 m-auto fixed bottom-2 left-1/2 -translate-x-1/2">
-          <button onClick={""} className="bg-orange-400 hover:bg-orange-500 w-full rounded-lg p-3 text-center">
+          <button onClick={handleClick} className="bg-orange-400 hover:bg-orange-500 w-full rounded-lg p-3 text-center">
             End Game
           </button>
         </div>

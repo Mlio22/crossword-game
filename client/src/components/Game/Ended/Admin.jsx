@@ -15,6 +15,8 @@ export default function Admin({}) {
       },
     });
 
+    console.log(data);
+
     setResult(data);
   }
 
@@ -45,12 +47,12 @@ export default function Admin({}) {
           <div className="blueTeam relative bg-red-500 w-1/2 p-4 ml-2">
             <p className="font-bold mb-2 text-xl">Red Team</p>
             <ul className="mb-20 max-h-80 overflow-auto">
-            {result.data.red.players.map((player, idx) => {
+              {result.data.red.players.map((player, idx) => {
                 return <li key={idx}>{player}</li>;
               })}
             </ul>
 
-            <div className="score bottom-4 absolute left-1/2 -translate-x-1/2 font-bold text-5xl">{result.data.blue.score}</div>
+            <div className="score bottom-4 absolute left-1/2 -translate-x-1/2 font-bold text-5xl">{result.data.red.score}</div>
           </div>
         </div>
 
