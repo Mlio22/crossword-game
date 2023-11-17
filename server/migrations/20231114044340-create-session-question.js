@@ -16,6 +16,8 @@ module.exports = {
           model: "GameSessions",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       QuestionId: {
         allowNull: false,
@@ -24,6 +26,8 @@ module.exports = {
           model: "Questions",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       isSolved: {
         allowNull: false,
@@ -36,6 +40,8 @@ module.exports = {
           model: "GamePlayers",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,

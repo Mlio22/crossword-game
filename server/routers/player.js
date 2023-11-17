@@ -4,6 +4,7 @@ const { mustAuthenticated, mustRegistered } = require("../middlewares/authentica
 const router = express.Router();
 
 router.post("/login", PlayerController.login);
+router.get("/checkSession/:gameSessionId", [mustAuthenticated], PlayerController.checkSession)
 router.post("/signup", [mustAuthenticated], PlayerController.signup);
 
 router.get("/gameSession/:gameSessionId", [mustAuthenticated, mustRegistered], PlayerController.getSessionById);

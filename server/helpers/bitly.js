@@ -1,7 +1,8 @@
-const DOMAIN = "http://crossword-game.com";
+const CLIENT = require("../constants");
 const ENDPOINT_URL = "https://api-ssl.bitly.com/v4/shorten";
+
 async function createGameSessionLink(gameSessionId) {
-  const url = `${DOMAIN}/gameSession/${gameSessionId}`;
+  const url = `${CLIENT}/${gameSessionId}`;
 
   try {
     const response = await fetch(ENDPOINT_URL, {
@@ -15,11 +16,13 @@ async function createGameSessionLink(gameSessionId) {
 
     const responseJSON = await response.json();
 
-    console.log(responseJSON);
-    return responseJSON.link;
+    if (responseJSON.link) {
+      return responseJSON.link;
+    }
   } catch (error) {
     console.log(error);
   }
+  return url;
 }
 
 module.exports = { createGameSessionLink };

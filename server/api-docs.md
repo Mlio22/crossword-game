@@ -1,10 +1,10 @@
 # Lodging API Documentation
 
-GCP IP:
+GCP IP: 34.142.157.9
 
 DOMAIN:
 
-Test using Postman (import):
+Test using Postman (import):https://api.postman.com/collections/11206461-6af3078c-16da-42b4-9aac-6b994c480079?access_key=PMAT-01HFD5AD17P1FRJFKPW81YS6T7
 
 &nbsp;
 
@@ -103,6 +103,40 @@ List of available endpoints:
 
 # Player Routes
 
+## 0. GET /checkSession/:gameSessionId
+
+Description:
+
+- Checks if selected session is available
+
+parameters:
+
+- gameSessionId: integer
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "OK"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game already started / ended"
+}
+```
+
+_Response (404 - Not Found)_
+
+```json
+{
+  "message": "Game not found"
+}
+```
+
 ## 1. POST /login
 
 Description:
@@ -113,7 +147,7 @@ Description:
 
 ```json
 {
-  "googleProfileID": "string (required)"
+  "google_token": "string (required)"
 }
 ```
 
@@ -158,6 +192,14 @@ _Response (400 - Bad Request)_
 }
 ```
 
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Duplicate name"
+}
+```
+
 _Response (401 - Unauthorized)_
 
 ```json
@@ -166,11 +208,11 @@ _Response (401 - Unauthorized)_
 }
 ```
 
-_Response (400 - Bad Request)_
+_Response (403 - Forbidden)_
 
 ```json
 {
-  "message": "Duplicate name"
+  "message": "Already registered"
 }
 ```
 
@@ -849,9 +891,7 @@ _Response (200 - OK)_
 
 ```json
 {
-  "data": {
-    "id": "number"
-  }
+  "id": "number"
 }
 ```
 
@@ -903,6 +943,8 @@ _Response (200 - OK)_
 {
   "data": {
     "title": "string",
+    "link": "string",
+    "qrcode": "image/xml",
     "sessionQuestions": [] | [
       {
         "GameSessionId": "number",
@@ -1095,7 +1137,7 @@ body:
 
 _Response (200 - OK)_
 
-````json
+```json
 {
   "data": {
     "red": {
@@ -1108,7 +1150,7 @@ _Response (200 - OK)_
     }
   },
 }
-````
+```
 
 _Response (401 - Unauthorized)_
 

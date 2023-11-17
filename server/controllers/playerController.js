@@ -2,22 +2,33 @@ const { findClues } = require("../helpers/clues");
 const { createToken } = require("../helpers/jwt");
 const { randomTeam } = require("../helpers/random");
 const { Player, Game, GamePlayer, GameSession, SessionQuestion, Question } = require("../models");
+const { OAuth2Client } = require("google-auth-library");
 
 module.exports = class PlayerController {
   static async login(req, res, next) {
     try {
       req.body = req.body || {};
 
-      const { googleProfileID } = req.body;
+      const { google_token } = req.body;
 
-      if (!googleProfileID) {
-        throw { name: "badRequest", message: "Please login" };
+      if (!google_token) {
+        throw { name: "badRequest", message: "Please login using google" };
       }
 
+      const client = new OAuth2Client();
+      const ticket = await client.verifyIdToken({
+        idToken: google_token,
+        audience: process.env.GOOGLE_OAUTH_CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      const payload = ticket.getPayload();
+      const googleUserId = payload["sub"];
+
       const [selectedPlayer, createdPlayer] = await Player.findOrCreate({
-        where: { googleProfileID },
+        where: { googleProfileID: googleUserId },
         defaults: {
-          googleProfileID,
+          googleProfileID: googleUserId,
         },
       });
 
@@ -26,6 +37,43 @@ module.exports = class PlayerController {
       const access_token = createToken({ id });
 
       return res.status(200).json({ access_token });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  static async checkSession(req, res, next) {
+    try {
+      const { gameSessionId } = req.params;
+
+      if (!gameSessionId) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      const selectedGameSession = await GameSession.findByPk(gameSessionId);
+
+      if (!selectedGameSession) {
+        throw { name: "notFound", message: "Game not found" };
+      }
+
+      // check player already logged in or not
+      console.log(selectedGameSession.status);
+      if (selectedGameSession.status !== "waiting") {
+        const { id: PlayerId } = req.user;
+
+        const selectedGamePlayer = await GamePlayer.findOne({
+          where: {
+            PlayerId,
+            GameSessionId: gameSessionId,
+          },
+        });
+
+        if (!selectedGamePlayer) {
+          throw { name: "notFound", message: "Game already started / ended" };
+        }
+      }
+
+      return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
     }
@@ -55,6 +103,19 @@ module.exports = class PlayerController {
         throw { name: "notFound", message: "Game already started / ended" };
       }
 
+      // check player already signed up
+      const { id: PlayerId } = req.user;
+      const signedPlayer = await GamePlayer.findOne({
+        where: {
+          PlayerId,
+          GameSessionId: gameSessionId
+        },
+      });
+
+      if (signedPlayer) {
+        throw { name: "forbidden", message: "Already registered" };
+      }
+
       const duplicateUsername = await GamePlayer.findOne({
         where: {
           username,
@@ -66,7 +127,6 @@ module.exports = class PlayerController {
         throw { name: "badRequest", message: "Duplicate name" };
       }
 
-      const { id: PlayerId } = req.user;
       await GamePlayer.create({
         PlayerId,
         GameSessionId: gameSessionId,
@@ -74,6 +134,7 @@ module.exports = class PlayerController {
         team: randomTeam(),
       });
 
+      req.app.io.emit('refresh')
       return res.status(200).json({ message: "OK" });
     } catch (error) {
       return next(error);
@@ -223,6 +284,7 @@ module.exports = class PlayerController {
 
       await gamePlayer.increment({ score: 100 });
 
+      req.app.io.emit('refresh')
       return res.status(200).json({ message: "correct" });
     } catch (error) {
       return next(error);
