@@ -2,7 +2,7 @@ const CLIENT = require("../constants");
 const ENDPOINT_URL = "https://api-ssl.bitly.com/v4/shorten";
 
 async function createGameSessionLink(gameSessionId) {
-  const url = `${CLIENT}/gameSession/${gameSessionId}`;
+  const url = `${CLIENT}/${gameSessionId}`;
 
   try {
     const response = await fetch(ENDPOINT_URL, {
